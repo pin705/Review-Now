@@ -98,6 +98,21 @@ const ShopProfilePage: React.FC = () => {
       <Header title="Chi tiết shop" showBackIcon={true} onBackClick={() => navigate(-1)} />
 
       <Box className="page-content-with-header space-y-4">
+        {/* Shop Image */}
+        {shop.images && shop.images.length > 0 ? (
+          <Box className="w-full aspect-video rounded-lg overflow-hidden">
+            <img 
+              src={shop.images[0]} 
+              alt={shop.name}
+              className="w-full h-full object-cover"
+            />
+          </Box>
+        ) : (
+          <Box className="w-full aspect-video rounded-lg bg-gradient-to-br from-yellow-100 to-yellow-50 flex items-center justify-center">
+            <Icon icon={getPlatformIconName(shop.platform) as any} size={64} className="text-yellow-300" />
+          </Box>
+        )}
+
         {/* Shop Basic Info */}
         <Box className="card fade-in">
           <Box className="flex items-start gap-3 mb-4">
@@ -107,11 +122,12 @@ const ShopProfilePage: React.FC = () => {
                 {shop.name}
               </h2>
               <Box className="flex flex-wrap gap-2">
-                <Box className="badge-yellow">
+                <Box className="badge badge-platform">
+                  <Icon icon={getPlatformIconName(shop.platform) as any} size={14} />
                   {shop.platform}
                 </Box>
                 {shop.verified && (
-                  <Box className="badge-verified">
+                  <Box className="badge badge-verified">
                     <Icon icon="zi-check-circle-solid" size={14} />
                     Đã xác thực
                   </Box>

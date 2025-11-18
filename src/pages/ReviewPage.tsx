@@ -4,6 +4,7 @@ import { Page, Header, Button, Icon, Box, useSnackbar } from 'zmp-ui';
 import { Shop } from '../types';
 import { shopService } from '../services/shop.service';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { ImageUploader } from '../components/ImageUploader';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../state';
 
@@ -21,6 +22,7 @@ const ReviewPage: React.FC = () => {
   const [rating, setRating] = useState<1 | 2 | 3 | 4 | 5>(5);
   const [content, setContent] = useState('');
   const [reviewType, setReviewType] = useState<'review' | 'report'>('review');
+  const [images, setImages] = useState<string[]>([]);
 
   useEffect(() => {
     // Set initial type from query string if provided
@@ -59,7 +61,8 @@ const ReviewPage: React.FC = () => {
           rating,
           content: content.trim(),
           type: rating >= 3 ? 'positive' : 'negative',
-          helpful: 0
+          helpful: 0,
+          images
         });
       } else {
         await shopService.addReport({
@@ -199,6 +202,17 @@ const ReviewPage: React.FC = () => {
           <Box className="text-right text-xs text-gray-500 mt-2">
             {content.length}/500 ký tự
           </Box>
+        </Box>
+
+        {/* Image Upload */}
+        <Box className="card mt-4">
+          <h3 className="card-header">Hình ảnh</h3>
+          <ImageUploader
+            images={images}
+            onImagesChange={setImages}
+            maxImages={5}
+            folder={reviewType === 'review' ? 'reviews' : 'reports'}
+          />
         </Box>
 
         {/* Submit Button */}

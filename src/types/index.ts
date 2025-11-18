@@ -12,6 +12,7 @@ export interface Shop {
   verified: boolean;
   createdDate?: string;
   lastUpdated?: string;
+  images?: string[]; // Array of shop image URLs
 }
 
 // Types cho Review/Rating
@@ -25,6 +26,7 @@ export interface Review {
   type: 'positive' | 'negative';
   createdAt: string;
   helpful: number;
+  images?: string[]; // Array of image URLs
 }
 
 // Types cho Report

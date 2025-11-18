@@ -3,6 +3,7 @@ import { Page, Header, Button, Icon, Box, Text, Input, Select, useSnackbar } fro
 import { useNavigate, useLocation } from 'react-router-dom';
 import { shopService } from '../services/shop.service';
 import { Section } from '../components/section';
+import { ImageUploader } from '../components/ImageUploader';
 import { useRecoilValue } from 'recoil';
 import { userState } from '../state';
 
@@ -26,6 +27,7 @@ const AddShopPage: React.FC = () => {
   const [platform, setPlatform] = useState<string>('');
   const [rating, setRating] = useState<1 | 2 | 3 | 4 | 5>(5);
   const [reviewContent, setReviewContent] = useState('');
+  const [images, setImages] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   
   // Validation
@@ -58,6 +60,7 @@ const AddShopPage: React.FC = () => {
         link: link.trim() || undefined,
         platform: platform || 'other',
         verified: false,
+        images
       });
       
       // Add initial review
@@ -69,6 +72,7 @@ const AddShopPage: React.FC = () => {
         content: reviewContent.trim(),
         type: rating >= 3 ? 'positive' : 'negative',
         helpful: 0,
+        images
       });
       
       snackbar.openSnackbar({
@@ -138,7 +142,7 @@ const AddShopPage: React.FC = () => {
         {/* Phone Number */}
         <Section title="Số điện thoại" padding="none">
           <Input
-            type="tel"
+            type="text"
             placeholder="0901234567"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
@@ -158,7 +162,7 @@ const AddShopPage: React.FC = () => {
         {/* Link (Optional) */}
         <Section title="Link shop" padding="none">
           <Input
-            type="url"
+            type="text"
             placeholder="https://zalo.me/... hoặc facebook.com/..."
             value={link}
             onChange={(e) => setLink(e.target.value)}
@@ -252,6 +256,16 @@ const AddShopPage: React.FC = () => {
           <Text size="xxSmall" className="text-gray mt-1">
             Bắt buộc • Tối thiểu 50 ký tự để đảm bảo chất lượng
           </Text>
+        </Section>
+
+        {/* Image Upload */}
+        <Section title="Hình ảnh shop" padding="none">
+          <ImageUploader
+            images={images}
+            onImagesChange={setImages}
+            maxImages={5}
+            folder="shops"
+          />
         </Section>
 
         {/* Guidelines */}

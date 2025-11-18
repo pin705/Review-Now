@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   await connectDB();
 
   const body = await readBody(event);
-  const { shopId, userId, userName, rating, content, type } = body;
+  const { shopId, userId, userName, rating, content, type, images } = body;
 
   // Create review
   const newReview = await Review.create({
@@ -17,7 +17,8 @@ export default defineEventHandler(async (event) => {
     rating,
     content,
     type,
-    helpful: 0
+    helpful: 0,
+    images: images || []
   });
 
   // Update shop statistics
@@ -49,6 +50,7 @@ export default defineEventHandler(async (event) => {
     content: newReview.content,
     type: newReview.type,
     createdAt: newReview.createdAt,
-    helpful: newReview.helpful
+    helpful: newReview.helpful,
+    images: newReview.images || []
   };
 });

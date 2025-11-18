@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { BottomNavigation, Icon } from "zmp-ui";
+import { BottomNavigation, Box, Icon } from "zmp-ui";
 
 export const Navigation: FC = () => {
   const navigate = useNavigate();
@@ -32,10 +32,12 @@ export const Navigation: FC = () => {
   ];
 
   return (
-    <BottomNavigation fixed activeKey={location.pathname} onChange={(key) => navigate(key)}>
+    <div className="pt-10">
+      <BottomNavigation fixed activeKey={location.pathname} onChange={(key) => navigate(key)}>
       {tabs.map((t) => (
         <BottomNavigation.Item key={t.path} label={t.label} icon={t.icon} />
       ))}
     </BottomNavigation>
+    </div>
   );
 };

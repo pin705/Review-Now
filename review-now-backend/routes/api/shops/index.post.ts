@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   await connectDB();
 
   const body = await readBody(event);
-  const { name, phone, link, platform, verified } = body;
+  const { name, phone, link, platform, verified, images } = body;
 
   const newShop = await Shop.create({
     name,
@@ -17,7 +17,8 @@ export default defineEventHandler(async (event) => {
     trustScore: 50,
     totalReviews: 0,
     positiveReviews: 0,
-    negativeReviews: 0
+    negativeReviews: 0,
+    images: images || []
   });
 
   return {
@@ -32,6 +33,7 @@ export default defineEventHandler(async (event) => {
     negativeReviews: newShop.negativeReviews,
     verified: newShop.verified,
     createdDate: newShop.createdDate,
-    lastUpdated: newShop.lastUpdated
+    lastUpdated: newShop.lastUpdated,
+    images: newShop.images || []
   };
 });

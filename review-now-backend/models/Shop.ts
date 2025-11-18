@@ -42,6 +42,10 @@ const shopSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  images: {
+    type: [String],
+    default: []
+  },
   createdDate: {
     type: Date,
     default: Date.now

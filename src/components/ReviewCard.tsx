@@ -34,7 +34,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
           </div>
         </div>
         <span className={`badge ${review.type === 'positive' ? 'success' : 'danger'}`}>
-          <Icon icon={review.type === 'positive' ? 'zi-like' : 'zi-dislike'} className="mr-1" />
+          <Icon icon={(review.type === 'positive' ? 'zi-check-circle-solid' : 'zi-close-circle-solid') as any} className="mr-1" />
           {review.type === 'positive' ? 'Tích cực' : 'Tiêu cực'}
         </span>
       </div>
@@ -42,6 +42,22 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
       <p className="text-gray-700 text-sm leading-relaxed mb-3">
         {review.content}
       </p>
+      
+      {/* Image Gallery */}
+      {review.images && review.images.length > 0 && (
+        <div className="grid grid-cols-3 gap-2 mb-3">
+          {review.images.map((imageUrl, index) => (
+            <div key={index} className="aspect-square rounded-lg overflow-hidden border border-gray-200">
+              <img 
+                src={imageUrl} 
+                alt={`Review image ${index + 1}`}
+                className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                onClick={() => window.open(imageUrl, '_blank')}
+              />
+            </div>
+          ))}
+        </div>
+      )}
       
       <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
         <button className="flex items-center gap-1 hover:text-blue-600 transition-colors">

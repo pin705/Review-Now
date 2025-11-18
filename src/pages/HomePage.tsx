@@ -122,6 +122,20 @@ const FeaturedShopsContent: FC = () => {
             <Box className="flex-shrink-0 w-12 h-12 bg-[#eab308] rounded-full flex items-center justify-center">
               <Text className="text-white font-bold text-lg">#{index + 1}</Text>
             </Box>
+            {/* Shop Thumbnail */}
+            {shop.images && shop.images.length > 0 ? (
+              <Box className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                <img 
+                  src={shop.images[0]} 
+                  alt={shop.name}
+                  className="w-full h-full object-cover"
+                />
+              </Box>
+            ) : (
+              <Box className="w-12 h-12 rounded-lg bg-gradient-to-br from-yellow-100 to-yellow-50 flex items-center justify-center flex-shrink-0">
+                <Icon icon={getPlatformIconName(shop.platform) as any} size={24} className="text-yellow-300" />
+              </Box>
+            )}
             <Box className="flex-1">
               <Box flex alignItems="center" className="space-x-2">
                 <Text.Header className="font-medium">{shop.name}</Text.Header>

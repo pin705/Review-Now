@@ -217,13 +217,26 @@ const SearchPage: React.FC = () => {
                   className="card cursor-pointer hover:shadow-md transition-all fade-in"
                 >
                   <Box className="flex items-start gap-3">
-                    <Icon icon={getPlatformIconName(shop.platform) as any} size={32} />
+                    {/* Shop Thumbnail */}
+                    {shop.images && shop.images.length > 0 ? (
+                      <Box className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                        <img 
+                          src={shop.images[0]} 
+                          alt={shop.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </Box>
+                    ) : (
+                      <Box className="w-16 h-16 rounded-lg bg-gradient-to-br from-yellow-100 to-yellow-50 flex items-center justify-center flex-shrink-0">
+                        <Icon icon={getPlatformIconName(shop.platform) as any} size={28} className="text-yellow-300" />
+                      </Box>
+                    )}
                     <Box className="flex-1 min-w-0">
                       <Box className="flex items-start justify-between gap-2 mb-2">
                         <Text className="font-semibold text-gray-900">{shop.name}</Text>
                       </Box>
                       <Box className="flex flex-wrap gap-2 mb-2">
-                        <Box className="badge badge-yellow">
+                        <Box className="badge badge-platform">
                           <Icon icon={getPlatformIconName(shop.platform) as any} size={14} />
                           {shop.platform}
                         </Box>

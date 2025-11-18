@@ -138,6 +138,7 @@ export const shopService = {
     link?: string;
     platform: string;
     verified: boolean;
+    images?: string[];
   }): Promise<Shop> => {
     try {
       const response = await fetch(`${API_BASE_URL}/shops`, {
@@ -153,6 +154,30 @@ export const shopService = {
       return await response.json();
     } catch (error) {
       console.error('Error creating shop:', error);
+      throw error;
+    }
+  },
+
+  // Upload image to Cloudinary
+  uploadImage: async (base64Image: string, folder?: string): Promise<string> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/upload`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ image: base64Image, folder }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
+      }
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.error || 'Upload failed');
+      }
+      return result.url;
+    } catch (error) {
+      console.error('Error uploading image:', error);
       throw error;
     }
   }

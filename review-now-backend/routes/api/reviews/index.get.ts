@@ -24,7 +24,8 @@ export default defineEventHandler(async (event) => {
     content: review.content,
     type: review.type,
     createdAt: review.createdAt,
-    helpful: review.helpful
+    helpful: review.helpful,
+    images: review.images || []
   }));
 
   return {

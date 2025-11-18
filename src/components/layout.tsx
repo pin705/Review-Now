@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router";
 import { Box } from "zmp-ui";
 import { getSystemInfo } from "zmp-sdk";
 import { Navigation } from "./navigation";
+import { FloatingActionButton } from "./FloatingActionButton";
 
 // Pages
 import HomePage from "../pages/HomePage";
@@ -11,6 +12,7 @@ import ShopProfilePage from "../pages/ShopProfilePage";
 import ReviewPage from "../pages/ReviewPage";
 import RecentReviewsPage from "../pages/RecentReviewsPage";
 import ProfilePage from "../pages/ProfilePage";
+import AddShopPage from "../pages/AddShopPage";
 
 if (import.meta.env.DEV) {
   document.body.style.setProperty("--zaui-safe-area-inset-top", "24px");
@@ -34,10 +36,12 @@ export const Layout: FC = () => {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/recent" element={<RecentReviewsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/add-shop" element={<AddShopPage />} />
           <Route path="/shop/:shopId" element={<ShopProfilePage />} />
           <Route path="/review/:shopId" element={<ReviewPage />} />
         </Routes>
       </Box>
+      <FloatingActionButton />
       <Navigation />
     </Box>
   );

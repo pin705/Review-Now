@@ -88,7 +88,7 @@ const ShopProfilePage: React.FC = () => {
                 </Box>
                 {shop.verified && (
                   <Box className="badge-verified">
-                    <Icon icon="zi-check-circle" size={14} />
+                    <Icon icon="zi-check-circle-solid" size={14} />
                     Đã xác thực
                   </Box>
                 )}

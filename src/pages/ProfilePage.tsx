@@ -7,65 +7,67 @@ const ProfilePage: FC = () => {
     <Page className="bg-background">
       <Header showBackIcon={false} title="&nbsp;" />
       
-      {/* User Info Card */}
-      <Box className="mx-4 mb-4">
-        <Box className="bg-[#eab308] text-white rounded-xl p-4 space-y-2">
-          <Text.Title className="font-bold text-white">Review Now Member</Text.Title>
-          <Text size="xxSmall" className="text-white/90">
-            Góp phần xây dựng cộng đồng mua sắm an toàn
-          </Text>
+      <Box className="page-content-with-header">
+        {/* User Info Card */}
+        <Box className="mb-4">
+          <Box className="bg-[#eab308] text-white rounded-xl p-4 space-y-2">
+            <Text.Title className="font-bold text-white">Review Now Member</Text.Title>
+            <Text size="xxSmall" className="text-white/90">
+              Góp phần xây dựng cộng đồng mua sắm an toàn
+            </Text>
+          </Box>
         </Box>
+        
+        {/* Personal Section */}
+        <Section title="Cá nhân">
+          <Box className="space-y-3">
+            <Box flex className="space-x-2 items-center">
+              <Icon icon="zi-user" />
+              <Box className="flex-1">
+                <Text size="small" className="font-medium">
+                  Thông tin tài khoản
+                </Text>
+              </Box>
+              <Icon icon="zi-chevron-right" />
+            </Box>
+            
+            <Box flex className="space-x-2 items-center">
+              <Icon icon="zi-clock-2" />
+              <Box className="flex-1">
+                <Text size="small" className="font-medium">
+                  Lịch sử đánh giá
+                </Text>
+              </Box>
+              <Icon icon="zi-chevron-right" />
+            </Box>
+          </Box>
+        </Section>
+        
+        {/* Other Section */}
+        <Section title="Khác">
+          <Box className="space-y-3">
+            <Box flex className="space-x-2 items-center">
+              <Icon icon="zi-star" />
+              <Box className="flex-1">
+                <Text size="small" className="font-medium">
+                  Đánh giá ứng dụng
+                </Text>
+              </Box>
+              <Icon icon="zi-chevron-right" />
+            </Box>
+            
+            <Box flex className="space-x-2 items-center">
+              <Icon icon="zi-help-circle" />
+              <Box className="flex-1">
+                <Text size="small" className="font-medium">
+                  Trợ giúp
+                </Text>
+              </Box>
+              <Icon icon="zi-chevron-right" />
+            </Box>
+          </Box>
+        </Section>
       </Box>
-      
-      {/* Personal Section */}
-      <Section title="Cá nhân">
-        <Box className="space-y-3">
-          <Box flex className="space-x-2 items-center">
-            <Icon icon="zi-user" />
-            <Box className="flex-1">
-              <Text size="small" className="font-medium">
-                Thông tin tài khoản
-              </Text>
-            </Box>
-            <Icon icon="zi-chevron-right" />
-          </Box>
-          
-          <Box flex className="space-x-2 items-center">
-            <Icon icon="zi-clock-2" />
-            <Box className="flex-1">
-              <Text size="small" className="font-medium">
-                Lịch sử đánh giá
-              </Text>
-            </Box>
-            <Icon icon="zi-chevron-right" />
-          </Box>
-        </Box>
-      </Section>
-      
-      {/* Other Section */}
-      <Section title="Khác">
-        <Box className="space-y-3">
-          <Box flex className="space-x-2 items-center">
-            <Icon icon="zi-star" />
-            <Box className="flex-1">
-              <Text size="small" className="font-medium">
-                Đánh giá ứng dụng
-              </Text>
-            </Box>
-            <Icon icon="zi-chevron-right" />
-          </Box>
-          
-          <Box flex className="space-x-2 items-center">
-            <Icon icon="zi-help-circle" />
-            <Box className="flex-1">
-              <Text size="small" className="font-medium">
-                Trợ giúp
-              </Text>
-            </Box>
-            <Icon icon="zi-chevron-right" />
-          </Box>
-        </Box>
-      </Section>
     </Page>
   );
 };

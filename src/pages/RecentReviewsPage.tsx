@@ -27,13 +27,13 @@ const RecentReviewsPage: React.FC = () => {
   };
 
   return (
-    <Page className="">
+    <Page className="bg-background">
       <Header
         title="Đánh giá gần đây"
         showBackIcon={false}
       />
 
-      <div className="p-4 mt-20">
+      <div className="page-content-with-header">
         {/* Stats Section */}
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="card text-center">

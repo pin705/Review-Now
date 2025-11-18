@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Page, Header, Input, Button, Icon, Box } from 'zmp-ui';
+import { Page, Header, Input, Button, Icon, Box, Text } from 'zmp-ui';
 import { useNavigate } from 'react-router-dom';
 import { shopService } from '../services/shop.service';
 import { SearchType, Shop } from '../types';
+import { Section } from '../components/section';
+import { Divider } from '../components/divider';
 import EmptyState from '../components/EmptyState';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { getPlatformIconName, getTrustScoreLevel } from '../utils/helpers';
@@ -64,39 +66,49 @@ const SearchPage: React.FC = () => {
   };
 
   return (
-    <Page className="bg-gray-50">
+    <Page className="bg-background">
       <Header
-        title="Review Now"
-        subtitle="Kiểm tra độ uy tín shop online"
+        title="Tìm kiếm"
+        subtitle="Tìm shop qua SĐT, tên hoặc link"
         showBackIcon={false}
       />
 
-      <Box className="page-content-with-header">
+      <Box className="page-content-with-header space-y-4">
         {/* Stats Cards */}
         <Box className="grid grid-cols-3 gap-3">
-          <Box className="stats-card from-yellow-50 to-white">
-            <Box className="text-2xl font-bold text-yellow-600">{stats.totalShops}</Box>
-            <Box className="text-xs text-gray-600 mt-1">Shops</Box>
+          <Box className="stats-card" style={{ '--from-color': '#fef3c7' } as any}>
+            <Text size="xLarge" className="font-bold text-[#eab308]">
+              {stats.totalShops}
+            </Text>
+            <Text size="xxSmall" className="text-gray mt-1">
+              Shops
+            </Text>
           </Box>
-          <Box className="stats-card from-green-50 to-white">
-            <Box className="text-2xl font-bold text-green-600">{stats.totalReviews}</Box>
-            <Box className="text-xs text-gray-600 mt-1">Đánh giá</Box>
+          <Box className="stats-card" style={{ '--from-color': '#dcfce7' } as any}>
+            <Text size="xLarge" className="font-bold text-green-600">
+              {stats.totalReviews}
+            </Text>
+            <Text size="xxSmall" className="text-gray mt-1">
+              Đánh giá
+            </Text>
           </Box>
-          <Box className="stats-card from-blue-50 to-white">
-            <Box className="text-2xl font-bold text-blue-600">{stats.verified}</Box>
-            <Box className="text-xs text-gray-600 mt-1">Xác thực</Box>
+          <Box className="stats-card" style={{ '--from-color': '#dbeafe' } as any}>
+            <Text size="xLarge" className="font-bold text-blue-600">
+              {stats.verified}
+            </Text>
+            <Text size="xxSmall" className="text-gray mt-1">
+              Xác thực
+            </Text>
           </Box>
         </Box>
 
         {/* Search Section */}
-        <Box className="card">
-          <h3 className="card-header">Tìm kiếm shop</h3>
-          
+        <Section title="Tìm kiếm shop" padding="all">
           {/* Search Type Selector */}
           <Box className="flex gap-2 mb-3">
             {[
               { value: 'phone' as SearchType, label: 'SĐT', iconName: 'zi-call' },
-              { value: 'name' as SearchType, label: 'Tên', iconName: 'zi-shop' },
+              { value: 'name' as SearchType, label: 'Tên', iconName: 'zi-more-grid' },
               { value: 'link' as SearchType, label: 'Link', iconName: 'zi-link' }
             ].map((type) => (
               <Button
@@ -135,24 +147,50 @@ const SearchPage: React.FC = () => {
               disabled={!query.trim()}
             />
           </Box>
-        </Box>
+        </Section>
 
         {/* Search Results */}
         {searching && <LoadingSpinner />}
         
         {!searching && hasSearched && results.length === 0 && (
-          <EmptyState
-            icon="zi-info-circle"
-            title="Không tìm thấy shop"
-            description="Thử tìm kiếm với từ khóa khác"
-          />
+          <Box className="space-y-3">
+            <EmptyState
+              icon="zi-info-circle"
+              title="Không tìm thấy shop"
+              description="Chưa có ai đánh giá shop này"
+            />
+            <Box className="card bg-gradient-to-br from-yellow-50 to-white border-yellow-200">
+              <Box className="text-center space-y-3">
+                <Icon icon="zi-plus-circle" size={48} className="text-yellow-600" />
+                <Box>
+                  <Text className="font-semibold text-gray-900 mb-1">
+                    Bạn đã mua hàng ở shop này?
+                  </Text>
+                  <Text size="xSmall" className="text-gray">
+                    Hãy là người đầu tiên đánh giá để giúp cộng đồng
+                  </Text>
+                </Box>
+                <Button
+                  onClick={() => {
+                    const params = new URLSearchParams();
+                    if (searchType === 'phone') params.set('phone', query);
+                    if (searchType === 'link') params.set('link', query);
+                    navigate(`/add-shop?${params.toString()}`);
+                  }}
+                  variant="primary"
+                  size="medium"
+                  icon={<Icon icon="zi-plus-circle-solid" />}
+                >
+                  Thêm shop này
+                </Button>
+              </Box>
+            </Box>
+          </Box>
         )}
 
         {!searching && results.length > 0 && (
-          <Box className="space-y-3">
-            <h3 className="card-header">
-              Kết quả ({results.length})
-            </h3>
+          <Section title={`Kết quả (${results.length})`} padding="all">
+            <Box className="space-y-3">
             {results.map((shop) => {
               const scoreLevel = getTrustScoreLevel(shop.trustScore);
               return (
@@ -165,27 +203,27 @@ const SearchPage: React.FC = () => {
                     <Icon icon={getPlatformIconName(shop.platform)} size={32} />
                     <Box className="flex-1 min-w-0">
                       <Box className="flex items-start justify-between gap-2 mb-2">
-                        <h3 className="font-semibold text-gray-900">{shop.name}</h3>
+                        <Text className="font-semibold text-gray-900">{shop.name}</Text>
                         {shop.verified && (
                           <Box className="badge-verified">
-                            <Icon icon="zi-verified" size={14} />
+                            <Icon icon="zi-list-1" size={14} />
                           </Box>
                         )}
                       </Box>
                       {shop.phone && (
-                        <p className="text-sm text-gray-600 mb-3 flex items-center gap-1">
+                        <Text size="xSmall" className="text-gray mb-3 flex items-center gap-1">
                           <Icon icon="zi-call" size={14} />
                           {shop.phone}
-                        </p>
+                        </Text>
                       )}
                       <Box className="flex items-center gap-3">
-                        <Box className={`text-2xl font-bold score-${scoreLevel}`}>
+                        <Text size="xLarge" className={`font-bold score-${scoreLevel}`}>
                           {shop.trustScore}
-                        </Box>
+                        </Text>
                         <Box className="flex-1">
-                          <Box className="text-xs text-gray-500 mb-1">
+                          <Text size="xxSmall" className="text-gray mb-1">
                             {shop.totalReviews} đánh giá
-                          </Box>
+                          </Text>
                           <Box className="w-full bg-gray-200 rounded-full h-1.5">
                             <Box
                               className={`h-1.5 rounded-full progress-bar-${scoreLevel}`}
@@ -197,45 +235,46 @@ const SearchPage: React.FC = () => {
                     </Box>
                   </Box>
                 </Box>
-              );
-            })}
-          </Box>
-        )}
-
-        {/* Featured Shops - Only show when no search */}
-        {!hasSearched && featuredShops.length > 0 && (
-          <Box className="space-y-3">
-            <Box className="flex items-center gap-2">
-              <Icon icon="zi-star-solid" className="text-yellow-500" />
-              <h3 className="font-semibold text-gray-900">Shop uy tín nhất</h3>
+                );
+              })}
             </Box>
-            {featuredShops.map((shop) => (
-              <Box
-                key={shop.id}
-                onClick={() => handleShopClick(shop)}
-                className="card cursor-pointer hover:shadow-md transition-all fade-in bg-gradient-to-br from-yellow-50 to-white border-yellow-200"
-              >
-                <Box className="flex items-start gap-3">
-                  <Icon icon={getPlatformIconName(shop.platform)} size={32} className="text-yellow-600" />
-                  <Box className="flex-1">
-                    <Box className="flex items-center justify-between mb-2">
-                      <h3 className="font-semibold text-gray-900">{shop.name}</h3>
-                      {shop.verified && (
-                        <Box className="badge-verified">
-                          <Icon icon="zi-verified" size={14} />
-                        </Box>
-                      )}
-                    </Box>
-                    <Box className="flex items-center gap-2 text-sm text-gray-600">
-                      <span className="font-bold text-green-600">{shop.trustScore}/100</span>
-                      <span>•</span>
-                      <span>{shop.totalReviews} đánh giá</span>
+          </Section>
+        )}        {/* Featured Shops - Only show when no search */}
+        {!hasSearched && featuredShops.length > 0 && (
+          <Section title="Shop uy tín nhất" padding="all">
+            <Box className="space-y-3">
+              {featuredShops.map((shop) => (
+                <Box
+                  key={shop.id}
+                  onClick={() => handleShopClick(shop)}
+                  className="card cursor-pointer hover:shadow-md transition-all fade-in bg-gradient-to-br from-yellow-50 to-white border-yellow-200"
+                >
+                  <Box className="flex items-start gap-3">
+                    <Icon icon={getPlatformIconName(shop.platform)} size={32} className="text-yellow-600" />
+                    <Box className="flex-1">
+                      <Box className="flex items-center justify-between mb-2">
+                        <Text className="font-semibold text-gray-900">{shop.name}</Text>
+                        {shop.verified && (
+                          <Box className="badge-verified">
+                            <Icon icon="zi-check-circle-solid" size={14} />
+                          </Box>
+                        )}
+                      </Box>
+                      <Box className="flex items-center gap-2">
+                        <Text size="xSmall" className="font-bold text-green-600">
+                          {shop.trustScore}/100
+                        </Text>
+                        <Text size="xSmall" className="text-gray">•</Text>
+                        <Text size="xSmall" className="text-gray">
+                          {shop.totalReviews} đánh giá
+                        </Text>
+                      </Box>
                     </Box>
                   </Box>
                 </Box>
-              </Box>
-            ))}
-          </Box>
+              ))}
+            </Box>
+          </Section>
         )}
       </Box>
     </Page>

@@ -10,7 +10,7 @@ import { Shop } from "../types";
 const Welcome: FC = () => {
   return (
     <Header
-      className="app-header no-border pl-4 flex-none pb-[6px]"
+      className="app-header no-border pl-4 flex-none"
       showBackIcon={false}
       title={
         (
@@ -193,13 +193,12 @@ const HomePage: React.FC = () => {
       <Welcome />
       <Box className="flex-1 overflow-auto bg-background">
         <Inquiry />
-        <Divider size={8} />
+        {/* <Divider size={4} /> */}
         <StatsSection />
-        <Divider size={8} />
+        {/* <Divider size={4} /> */}
         <QuickActions />
-        <Divider size={8} />
+        {/* <Divider size={4} /> */}
         <FeaturedShops />
-        <Divider size={32} />
       </Box>
     </Page>
   );

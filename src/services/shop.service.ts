@@ -1,4 +1,4 @@
-import { Shop, Review, Report, SearchResult, SearchType } from '../types';
+import { Shop, Review, Report, SearchResult, SearchType, Paginated } from '../types';
 
 // Backend API URL - can be configured via environment variable
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
@@ -8,10 +8,12 @@ export const shopService = {
   // Tìm kiếm shop
   searchShops: async (
     query: string,
-    type: SearchType
+    type: SearchType,
+    page: number = 1,
+    limit: number = 10
   ): Promise<SearchResult> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/shops/search?q=${encodeURIComponent(query)}&type=${type}`);
+      const response = await fetch(`${API_BASE_URL}/shops/search?q=${encodeURIComponent(query)}&type=${type}&page=${page}&limit=${limit}`);
       if (!response.ok) {
         throw new Error('Failed to search shops');
       }
@@ -43,20 +45,21 @@ export const shopService = {
   // Lấy reviews của shop
   getShopReviews: async (
     shopId: string,
-    type?: 'positive' | 'negative'
-  ): Promise<Review[]> => {
+    options?: { type?: 'positive' | 'negative'; page?: number; limit?: number }
+  ): Promise<Paginated<Review>> => {
     try {
-      const url = type 
-        ? `${API_BASE_URL}/shops/${shopId}/reviews?type=${type}`
-        : `${API_BASE_URL}/shops/${shopId}/reviews`;
-      const response = await fetch(url);
+      const params = new URLSearchParams();
+      if (options?.type) params.set('type', options.type);
+      params.set('page', String(options?.page ?? 1));
+      params.set('limit', String(options?.limit ?? 10));
+      const response = await fetch(`${API_BASE_URL}/shops/${shopId}/reviews?${params.toString()}`);
       if (!response.ok) {
         throw new Error('Failed to fetch reviews');
       }
       return await response.json();
     } catch (error) {
       console.error('Error fetching reviews:', error);
-      return [];
+      return { items: [], total: 0, hasMore: false, page: 1 };
     }
   },
 
@@ -101,16 +104,16 @@ export const shopService = {
   },
 
   // Lấy tất cả reviews gần đây
-  getAllRecentReviews: async (): Promise<Review[]> => {
+  getRecentReviews: async (page: number = 1, limit: number = 10): Promise<Paginated<Review>> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/reviews`);
+      const response = await fetch(`${API_BASE_URL}/reviews?page=${page}&limit=${limit}`);
       if (!response.ok) {
         throw new Error('Failed to fetch reviews');
       }
       return await response.json();
     } catch (error) {
       console.error('Error fetching recent reviews:', error);
-      return [];
+      return { items: [], total: 0, hasMore: false, page: 1 };
     }
   },
 

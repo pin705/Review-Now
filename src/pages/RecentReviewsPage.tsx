@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Page, Header, Icon } from 'zmp-ui';
+import { Page, Header, Icon, Button, Box } from 'zmp-ui';
 import { shopService } from '../services/shop.service';
 import { Review } from '../types';
 import ReviewCard from '../components/ReviewCard';
@@ -9,6 +9,9 @@ import EmptyState from '../components/EmptyState';
 const RecentReviewsPage: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
 
   useEffect(() => {
     loadRecentReviews();
@@ -17,12 +20,29 @@ const RecentReviewsPage: React.FC = () => {
   const loadRecentReviews = async () => {
     setLoading(true);
     try {
-      const allReviews = await shopService.getAllRecentReviews();
-      setReviews(allReviews);
+      const res = await shopService.getRecentReviews(1, 10);
+      setReviews(res.items);
+      setHasMore(res.hasMore);
+      setPage(1);
     } catch (error) {
       console.error('Error loading reviews:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadMore = async () => {
+    const next = page + 1;
+    setLoadingMore(true);
+    try {
+      const res = await shopService.getRecentReviews(next, 10);
+      setReviews((prev) => [...prev, ...res.items]);
+      setHasMore(res.hasMore);
+      setPage(next);
+    } catch (e) {
+      console.error('Error loading more reviews:', e);
+    } finally {
+      setLoadingMore(false);
     }
   };
 
@@ -90,6 +110,13 @@ const RecentReviewsPage: React.FC = () => {
             {reviews.map((review) => (
               <ReviewCard key={review.id} review={review} />
             ))}
+            {hasMore && (
+              <Box className="mt-2">
+                <Button variant="tertiary" fullWidth onClick={loadMore} loading={loadingMore}>
+                  Tải thêm
+                </Button>
+              </Box>
+            )}
           </div>
         )}
       </div>

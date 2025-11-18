@@ -15,6 +15,9 @@ const SearchPage: React.FC = () => {
   const [query, setQuery] = useState('');
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState<Shop[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [featuredShops, setFeaturedShops] = useState<Shop[]>([]);
   const [stats, setStats] = useState({ totalShops: 0, totalReviews: 0, verified: 0 });
@@ -52,12 +55,29 @@ const SearchPage: React.FC = () => {
     setHasSearched(true);
     
     try {
-      const result = await shopService.searchShops(query, searchType);
+      const result = await shopService.searchShops(query, searchType, 1, 10);
       setResults(result.shops);
+      setPage(1);
+      setHasMore(result.hasMore);
     } catch (error) {
       console.error('Search error:', error);
     } finally {
       setSearching(false);
+    }
+  };
+
+  const loadMore = async () => {
+    const next = page + 1;
+    setLoadingMore(true);
+    try {
+      const result = await shopService.searchShops(query, searchType, next, 10);
+      setResults((prev) => [...prev, ...(result.shops || [])]);
+      setPage(next);
+      setHasMore(result.hasMore);
+    } catch (e) {
+      console.error('Load more error:', e);
+    } finally {
+      setLoadingMore(false);
     }
   };
 
@@ -67,11 +87,7 @@ const SearchPage: React.FC = () => {
 
   return (
     <Page className="bg-background">
-      <Header
-        title="Tìm kiếm"
-        subtitle="Tìm shop qua SĐT, tên hoặc link"
-        showBackIcon={false}
-      />
+      <Header title="Tìm kiếm" showBackIcon={false} />
 
       <Box className="space-y-4">
         {/* Stats Cards */}
@@ -116,13 +132,14 @@ const SearchPage: React.FC = () => {
                 onClick={() => setSearchType(type.value)}
                 size="small"
                 variant={searchType === type.value ? 'primary' : 'secondary'}
-                icon={<Icon icon={type.iconName} />}
+                icon={<Icon icon={type.iconName as any} />}
                 fullWidth
               >
                 {type.label}
               </Button>
             ))}
           </Box>
+          
 
           {/* Search Input */}
           <Box className="flex gap-2 items-center">
@@ -200,14 +217,14 @@ const SearchPage: React.FC = () => {
                   className="card cursor-pointer hover:shadow-md transition-all fade-in"
                 >
                   <Box className="flex items-start gap-3">
-                    <Icon icon={getPlatformIconName(shop.platform)} size={32} />
+                    <Icon icon={getPlatformIconName(shop.platform) as any} size={32} />
                     <Box className="flex-1 min-w-0">
                       <Box className="flex items-start justify-between gap-2 mb-2">
                         <Text className="font-semibold text-gray-900">{shop.name}</Text>
                       </Box>
                       <Box className="flex flex-wrap gap-2 mb-2">
                         <Box className="badge badge-yellow">
-                          <Icon icon={getPlatformIconName(shop.platform)} size={14} />
+                          <Icon icon={getPlatformIconName(shop.platform) as any} size={14} />
                           {shop.platform}
                         </Box>
                         {shop.verified && (
@@ -245,8 +262,21 @@ const SearchPage: React.FC = () => {
                 );
               })}
             </Box>
+            {hasMore && (
+              <Box className="mt-3">
+                <Button
+                  onClick={loadMore}
+                  loading={loadingMore}
+                  variant="tertiary"
+                  fullWidth
+                >
+                  Tải thêm
+                </Button>
+              </Box>
+            )}
           </Section>
-        )}        {/* Featured Shops - Only show when no search */}
+        )}
+        {/* Featured Shops - Only show when no search */}
         {!hasSearched && featuredShops.length > 0 && (
           <Section title="Shop uy tín nhất" padding="all">
             <Box className="space-y-3">
@@ -257,7 +287,7 @@ const SearchPage: React.FC = () => {
                   className="card cursor-pointer hover:shadow-md transition-all fade-in bg-gradient-to-br from-yellow-50 to-white border-yellow-200"
                 >
                   <Box className="flex items-start gap-3">
-                    <Icon icon={getPlatformIconName(shop.platform)} size={32} className="text-yellow-600" />
+                    <Icon icon={getPlatformIconName(shop.platform) as any} size={32} className="text-yellow-600" />
                     <Box className="flex-1">
                       <Box className="flex items-center justify-between mb-2">
                         <Text className="font-semibold text-gray-900">{shop.name}</Text>

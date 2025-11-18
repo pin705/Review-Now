@@ -6,8 +6,10 @@ export default defineEventHandler(async (event) => {
   await connectDB();
 
   const shopId = getRouterParam(event, 'shopId');
-  const query = getQuery(event);
+  const query = getQuery(event) as { type?: string; page?: string; limit?: string };
   const { type } = query;
+  const page = Math.max(parseInt(query.page || '1', 10), 1);
+  const limit = Math.min(Math.max(parseInt(query.limit || '10', 10), 1), 50);
 
   if (!shopId) {
     return [];
@@ -19,9 +21,14 @@ export default defineEventHandler(async (event) => {
     filter.type = type;
   }
 
-  const reviews = await Review.find(filter).sort({ createdAt: -1 }).lean();
+  const total = await Review.countDocuments(filter);
+  const reviews = await Review.find(filter)
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .lean();
 
-  return reviews.map(review => ({
+  const items = reviews.map(review => ({
     id: review._id.toString(),
     shopId: review.shopId.toString(),
     userId: review.userId,
@@ -32,4 +39,11 @@ export default defineEventHandler(async (event) => {
     createdAt: review.createdAt,
     helpful: review.helpful
   }));
+
+  return {
+    items,
+    total,
+    hasMore: page * limit < total,
+    page
+  };
 });

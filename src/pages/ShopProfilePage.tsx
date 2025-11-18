@@ -16,24 +16,33 @@ const ShopProfilePage: React.FC = () => {
   const [shop, setShop] = useState<Shop | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
   const [activeTab, setActiveTab] = useState<'all' | 'positive' | 'negative'>('all');
 
   useEffect(() => {
     loadShopData();
   }, [shopId]);
 
+  useEffect(() => {
+    if (shopId) {
+      // reset and load reviews for current tab
+      setReviews([]);
+      setPage(1);
+      loadReviews(1, true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeTab, shopId]);
+
   const loadShopData = async () => {
     if (!shopId) return;
     
     setLoading(true);
     try {
-      const [shopData, reviewsData] = await Promise.all([
-        shopService.getShopById(shopId),
-        shopService.getShopReviews(shopId)
-      ]);
-      
+      const shopData = await shopService.getShopById(shopId);
       setShop(shopData);
-      setReviews(reviewsData);
+      // first page of reviews will be loaded by loadReviews in the effect tied to activeTab
     } catch (error) {
       console.error('Error loading shop:', error);
     } finally {
@@ -41,10 +50,25 @@ const ShopProfilePage: React.FC = () => {
     }
   };
 
-  const filteredReviews = reviews.filter(review => {
-    if (activeTab === 'all') return true;
-    return review.type === activeTab;
-  });
+  const loadReviews = async (nextPage: number, replace = false) => {
+    if (!shopId) return;
+    const typeParam = activeTab === 'all' ? undefined : activeTab;
+    if (nextPage === 1) {
+      setLoadingMore(false);
+    } else {
+      setLoadingMore(true);
+    }
+    try {
+      const res = await shopService.getShopReviews(shopId, { type: typeParam, page: nextPage, limit: 10 });
+      setHasMore(res.hasMore);
+      setPage(res.page);
+      setReviews((prev) => (replace ? res.items : [...prev, ...res.items]));
+    } catch (e) {
+      console.error('Error loading reviews:', e);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   if (loading) {
     return <LoadingSpinner fullScreen />;
@@ -77,7 +101,7 @@ const ShopProfilePage: React.FC = () => {
         {/* Shop Basic Info */}
         <Box className="card fade-in">
           <Box className="flex items-start gap-3 mb-4">
-            <Icon icon={getPlatformIconName(shop.platform)} size={32} />
+            <Icon icon={getPlatformIconName(shop.platform) as any} size={32} />
             <Box className="flex-1">
               <h2 className="text-xl font-bold text-gray-900 mb-2">
                 {shop.name}
@@ -154,7 +178,7 @@ const ShopProfilePage: React.FC = () => {
           {/* Tabs */}
           <Box className="flex gap-2 mb-4 border-b border-gray-200">
             {[
-              { key: 'all' as const, label: 'Tất cả', count: reviews.length },
+              { key: 'all' as const, label: 'Tất cả', count: shop.totalReviews },
               { key: 'positive' as const, label: 'Tích cực', count: shop.positiveReviews },
               { key: 'negative' as const, label: 'Tiêu cực', count: shop.negativeReviews }
             ].map((tab) => (
@@ -174,7 +198,7 @@ const ShopProfilePage: React.FC = () => {
 
           {/* Reviews List */}
           <Box className="space-y-3">
-            {filteredReviews.length === 0 ? (
+            {reviews.length === 0 ? (
               <EmptyState
                 icon="zi-note"
                 title="Chưa có đánh giá"
@@ -185,9 +209,19 @@ const ShopProfilePage: React.FC = () => {
                 }
               />
             ) : (
-              filteredReviews.map((review) => (
+              reviews.map((review) => (
                 <ReviewCard key={review.id} review={review} />
               ))
+            )}
+            {hasMore && (
+              <Button
+                onClick={() => loadReviews(page + 1)}
+                loading={loadingMore}
+                variant="tertiary"
+                fullWidth
+              >
+                Tải thêm
+              </Button>
             )}
           </Box>
         </Box>

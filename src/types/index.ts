@@ -48,3 +48,11 @@ export interface SearchResult {
   hasMore: boolean;
   total: number;
 }
+
+// Generic pagination payload
+export interface Paginated<T> {
+  items: T[];
+  total: number;
+  hasMore: boolean;
+  page: number;
+}

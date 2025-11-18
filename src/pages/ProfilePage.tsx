@@ -76,7 +76,7 @@ const ProfilePage: FC = () => {
               className="space-x-2 items-center cursor-pointer"
               onClick={() => navigate("/terms-privacy")}
             >
-              <Icon icon="zi-shield-tick" />
+              <Icon icon="zi-check-circle" />
               <Box className="flex-1">
                 <Text size="small" className="font-medium">
                   Điều khoản & Bảo mật

@@ -93,7 +93,7 @@ const UserGuidePage: React.FC = () => {
         {/* Trust Score */}
         <Box className="card mb-4">
           <Text className="font-semibold text-gray-900 mb-3 flex items-center">
-            <Icon icon="zi-chart" className="mr-2 text-yellow-600" />
+            <Icon icon="zi-star" className="mr-2 text-yellow-600" />
             Hiểu về điểm uy tín
           </Text>
           <Box className="space-y-3 ml-6">

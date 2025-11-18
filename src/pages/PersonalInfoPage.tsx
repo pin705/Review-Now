@@ -77,7 +77,7 @@ const PersonalInfoPage: React.FC = () => {
 
             <Box flex className="items-center space-x-3">
               <Box className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
-                <Icon icon="zi-card" className="text-blue-600" />
+                <Icon icon="zi-info-circle" className="text-blue-600" />
               </Box>
               <Box className="flex-1">
                 <Text size="xSmall" className="text-gray-600">Zalo ID</Text>
@@ -92,7 +92,7 @@ const PersonalInfoPage: React.FC = () => {
         {/* Privacy Notice */}
         <Box className="card bg-green-50 border-green-200">
           <Box flex className="items-start space-x-3">
-            <Icon icon="zi-shield-tick" className="text-green-600 mt-0.5" />
+            <Icon icon="zi-check-circle" className="text-green-600 mt-0.5" />
             <Box className="flex-1">
               <Text size="small" className="font-medium text-green-900 mb-1">
                 Bảo mật thông tin

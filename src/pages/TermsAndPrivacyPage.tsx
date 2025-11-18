@@ -216,7 +216,7 @@ const TermsAndPrivacyPage: React.FC = () => {
             {/* Contact */}
             <Box className="card bg-green-50 border-green-200">
               <Box flex className="items-start space-x-3">
-                <Icon icon="zi-shield-tick" className="text-green-600 mt-0.5" />
+                <Icon icon="zi-check-circle" className="text-green-600 mt-0.5" />
                 <Box className="flex-1">
                   <Text size="small" className="font-medium text-green-900 mb-1">
                     Cam kết bảo mật

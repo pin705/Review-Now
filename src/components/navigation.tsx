@@ -8,7 +8,11 @@ export const Navigation: FC = () => {
 
   // Hide on detail pages
   const hideNav = location.pathname.startsWith("/shop") || 
-                  location.pathname.startsWith("/review/");
+                  location.pathname.startsWith("/review/") ||
+                  location.pathname.startsWith("/review-history") ||
+                  location.pathname.startsWith("/personal-info") ||
+                  location.pathname.startsWith("/user-guide") ||
+                  location.pathname.startsWith("/terms-privacy");
 
   if (hideNav) {
     return null;

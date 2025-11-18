@@ -1,8 +1,11 @@
 import React, { FC } from "react";
 import { Box, Header, Icon, Page, Text } from "zmp-ui";
+import { useNavigate } from "react-router-dom";
 import { Section } from "../components/section";
 
 const ProfilePage: FC = () => {
+  const navigate = useNavigate();
+
   return (
     <Page className="bg-background">
       <Header showBackIcon={false} title="&nbsp;" />
@@ -21,17 +24,25 @@ const ProfilePage: FC = () => {
         {/* Personal Section */}
         <Section title="Cá nhân">
           <Box className="space-y-3">
-            <Box flex className="space-x-2 items-center">
+            <Box 
+              flex 
+              className="space-x-2 items-center cursor-pointer"
+              onClick={() => navigate("/personal-info")}
+            >
               <Icon icon="zi-user" />
               <Box className="flex-1">
                 <Text size="small" className="font-medium">
-                  Thông tin tài khoản
+                  Thông tin cá nhân
                 </Text>
               </Box>
               <Icon icon="zi-chevron-right" />
             </Box>
             
-            <Box flex className="space-x-2 items-center">
+            <Box 
+              flex 
+              className="space-x-2 items-center cursor-pointer"
+              onClick={() => navigate("/review-history")}
+            >
               <Icon icon="zi-clock-2" />
               <Box className="flex-1">
                 <Text size="small" className="font-medium">
@@ -46,21 +57,29 @@ const ProfilePage: FC = () => {
         {/* Other Section */}
         <Section title="Khác">
           <Box className="space-y-3">
-            <Box flex className="space-x-2 items-center">
-              <Icon icon="zi-star" />
+            <Box 
+              flex 
+              className="space-x-2 items-center cursor-pointer"
+              onClick={() => navigate("/user-guide")}
+            >
+              <Icon icon="zi-help-circle" />
               <Box className="flex-1">
                 <Text size="small" className="font-medium">
-                  Đánh giá ứng dụng
+                  Hướng dẫn sử dụng
                 </Text>
               </Box>
               <Icon icon="zi-chevron-right" />
             </Box>
             
-            <Box flex className="space-x-2 items-center">
-              <Icon icon="zi-help-circle" />
+            <Box 
+              flex 
+              className="space-x-2 items-center cursor-pointer"
+              onClick={() => navigate("/terms-privacy")}
+            >
+              <Icon icon="zi-check-circle" />
               <Box className="flex-1">
                 <Text size="small" className="font-medium">
-                  Trợ giúp
+                  Điều khoản & Bảo mật
                 </Text>
               </Box>
               <Icon icon="zi-chevron-right" />

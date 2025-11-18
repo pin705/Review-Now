@@ -13,6 +13,10 @@ import ReviewPage from "../pages/ReviewPage";
 import RecentReviewsPage from "../pages/RecentReviewsPage";
 import ProfilePage from "../pages/ProfilePage";
 import AddShopPage from "../pages/AddShopPage";
+import ReviewHistoryPage from "../pages/ReviewHistoryPage";
+import PersonalInfoPage from "../pages/PersonalInfoPage";
+import UserGuidePage from "../pages/UserGuidePage";
+import TermsAndPrivacyPage from "../pages/TermsAndPrivacyPage";
 
 if (import.meta.env.DEV) {
   document.body.style.setProperty("--zaui-safe-area-inset-top", "24px");
@@ -39,6 +43,10 @@ export const Layout: FC = () => {
           <Route path="/add-shop" element={<AddShopPage />} />
           <Route path="/shop/:shopId" element={<ShopProfilePage />} />
           <Route path="/review/:shopId" element={<ReviewPage />} />
+          <Route path="/review-history" element={<ReviewHistoryPage />} />
+          <Route path="/personal-info" element={<PersonalInfoPage />} />
+          <Route path="/user-guide" element={<UserGuidePage />} />
+          <Route path="/terms-privacy" element={<TermsAndPrivacyPage />} />
         </Routes>
       </Box>
       <FloatingActionButton />

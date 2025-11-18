@@ -34,14 +34,15 @@ export const getTrustScoreLabel = (score: number): string => {
   return 'Không uy tín';
 };
 
-export const getPlatformIcon = (platform: string): string => {
+// Return Zalo UI icon name for a given platform
+export const getPlatformIconName = (platform: string): string => {
   const icons: Record<string, string> = {
-    facebook: '📘',
-    shopee: '🛍️',
-    lazada: '🛒',
-    tiktok: '🎵',
-    zalo: '💬',
-    other: '🏪'
+    facebook: 'zi-facebook',
+    shopee: 'zi-shopping-bag',
+    lazada: 'zi-shopping-cart',
+    tiktok: 'zi-video',
+    zalo: 'zi-zalo',
+    other: 'zi-shop'
   };
   return icons[platform] || icons.other;
 };

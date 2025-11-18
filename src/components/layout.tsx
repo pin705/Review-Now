@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Route, Routes } from "react-router";
 import { Box } from "zmp-ui";
-import { Navigation } from "./navigation";
+// import { Navigation } from "./navigation";
 import ExpenseHomePage from "pages/expense-home";
 import AddTransactionPage from "pages/add-transaction";
 import HistoryPage from "pages/history";
@@ -12,8 +12,12 @@ import ManageWalletsPage from "pages/manage-wallets";
 import ManageCategoriesPage from "pages/manage-categories";
 import GuidePage from "pages/guide";
 import { getSystemInfo } from "zmp-sdk";
-import { ScrollRestoration } from "./scroll-restoration";
-import { useHandlePayment } from "hooks";
+// import { ScrollRestoration } from "./scroll-restoration";
+
+// Pages
+import SearchPage from "../pages/SearchPage";
+import ShopProfilePage from "../pages/ShopProfilePage";
+import ReviewPage from "../pages/ReviewPage";
 
 if (import.meta.env.DEV) {
   document.body.style.setProperty("--zaui-safe-area-inset-top", "24px");
@@ -28,25 +32,17 @@ if (import.meta.env.DEV) {
 }
 
 export const Layout: FC = () => {
-  useHandlePayment();
-
   return (
     <Box flex flexDirection="column" className="h-screen">
-      <ScrollRestoration />
+      {/* <ScrollRestoration /> */}
       <Box className="flex-1 flex flex-col overflow-hidden">
         <Routes>
-          <Route path="/" element={<ExpenseHomePage />}></Route>
-          <Route path="/add-transaction" element={<AddTransactionPage />}></Route>
-          <Route path="/history" element={<HistoryPage />}></Route>
-          <Route path="/reports" element={<ReportsPage />}></Route>
-          <Route path="/budget" element={<BudgetPage />}></Route>
-          <Route path="/settings" element={<SettingsPage />}></Route>
-          <Route path="/manage-wallets" element={<ManageWalletsPage />}></Route>
-          <Route path="/manage-categories" element={<ManageCategoriesPage />}></Route>
-          <Route path="/guide" element={<GuidePage />}></Route>
+           <Route path="/" element={<SearchPage />} />
+                        <Route path="/shop/:shopId" element={<ShopProfilePage />} />
+                        <Route path="/review/:shopId" element={<ReviewPage />} />
         </Routes>
       </Box>
-      <Navigation />
+      {/* <Navigation /> */}
     </Box>
   );
 };

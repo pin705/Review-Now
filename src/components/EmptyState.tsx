@@ -1,7 +1,8 @@
 import React from 'react';
+import { Icon } from 'zmp-ui';
 
 interface EmptyStateProps {
-  icon?: string;
+  icon?: string; // zmp-ui icon name, e.g., 'zi-search'
   title: string;
   description?: string;
   action?: {
@@ -11,14 +12,16 @@ interface EmptyStateProps {
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
-  icon = '🔍',
+  icon = 'zi-search',
   title,
   description,
   action
 }) => {
   return (
     <div className="empty-state fade-in">
-      <div className="empty-state-icon">{icon}</div>
+      <div className="empty-state-icon">
+        <Icon icon={icon} size={48} className="text-gray-400" />
+      </div>
       <div className="empty-state-title">{title}</div>
       {description && (
         <div className="empty-state-description mt-2">{description}</div>

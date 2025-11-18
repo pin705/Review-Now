@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Tabs } from 'zmp-ui';
+import { Button, Tabs, Icon } from 'zmp-ui';
 import { Shop, Review } from '../types';
 import { shopService } from '../services/shop.service';
 import TrustScoreCard from '../components/TrustScoreCard';
 import ReviewCard from '../components/ReviewCard';
 import EmptyState from '../components/EmptyState';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { formatPhone, formatDate, getPlatformIcon } from '../utils/helpers';
+import { formatPhone, formatDate, getPlatformIconName } from '../utils/helpers';
 
 const ShopProfilePage: React.FC = () => {
   const { shopId } = useParams<{ shopId: string }>();
@@ -75,9 +75,7 @@ const ShopProfilePage: React.FC = () => {
             onClick={() => navigate(-1)}
             className="mr-3 p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors"
           >
-            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <Icon icon="zi-arrow-left" className="w-6 h-6 text-gray-700" />
           </button>
           <h1 className="text-lg font-semibold text-gray-900">Chi tiết shop</h1>
         </div>
@@ -89,7 +87,7 @@ const ShopProfilePage: React.FC = () => {
         <div className="card fade-in">
           <div className="flex items-start gap-3 mb-4">
             <div className="text-4xl">
-              {getPlatformIcon(shop.platform)}
+              <Icon icon={getPlatformIconName(shop.platform)} size={32} />
             </div>
             <div className="flex-1">
               <h2 className="text-xl font-bold text-gray-900 mb-1">
@@ -101,9 +99,7 @@ const ShopProfilePage: React.FC = () => {
                 </span>
                 {shop.verified && (
                   <span className="badge verified">
-                    <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
+                    <Icon icon="zi-verified" className="mr-1" />
                     Đã xác thực
                   </span>
                 )}
@@ -115,13 +111,13 @@ const ShopProfilePage: React.FC = () => {
           <div className="space-y-2 text-sm">
             {shop.phone && (
               <div className="flex items-center gap-2 text-gray-700">
-                <span className="text-lg">📱</span>
+                <Icon icon="zi-call" />
                 <span>{formatPhone(shop.phone)}</span>
               </div>
             )}
             {shop.url && (
               <div className="flex items-center gap-2 text-gray-700">
-                <span className="text-lg">🔗</span>
+                <Icon icon="zi-link" />
                 <a href={shop.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate">
                   {shop.url}
                 </a>
@@ -129,7 +125,7 @@ const ShopProfilePage: React.FC = () => {
             )}
             {shop.createdDate && (
               <div className="flex items-center gap-2 text-gray-600">
-                <span className="text-lg">📅</span>
+                <Icon icon="zi-calendar" />
                 <span>Hoạt động từ {formatDate(shop.createdDate)}</span>
               </div>
             )}

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Button } from 'zmp-ui';
+import React, { useState } from 'react';
+import { Input, Button, Icon } from 'zmp-ui';
 import { useNavigate } from 'react-router-dom';
 import { shopService } from '../services/shop.service';
 import { SearchType, Shop } from '../types';
 import EmptyState from '../components/EmptyState';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { getPlatformIcon, getTrustScoreLevel } from '../utils/helpers';
+import { getPlatformIconName, getTrustScoreLevel } from '../utils/helpers';
 
 const SearchPage: React.FC = () => {
   const navigate = useNavigate();
@@ -52,9 +52,9 @@ const SearchPage: React.FC = () => {
         <div className="px-4 pb-4">
           <div className="flex gap-2 mb-3">
             {[
-              { value: 'phone' as SearchType, label: 'Số điện thoại', icon: '📱' },
-              { value: 'name' as SearchType, label: 'Tên shop', icon: '🏪' },
-              { value: 'link' as SearchType, label: 'Link', icon: '🔗' }
+              { value: 'phone' as SearchType, label: 'Số điện thoại', icon: 'zi-call' },
+              { value: 'name' as SearchType, label: 'Tên shop', icon: 'zi-shop' },
+              { value: 'link' as SearchType, label: 'Link', icon: 'zi-link' }
             ].map((type) => (
               <button
                 key={type.value}
@@ -65,7 +65,7 @@ const SearchPage: React.FC = () => {
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                <span className="mr-1">{type.icon}</span>
+                <Icon icon={type.icon} className="mr-1" />
                 {type.label}
               </button>
             ))}
@@ -95,7 +95,7 @@ const SearchPage: React.FC = () => {
               {searching ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
-                '🔍'
+                <Icon icon="zi-search" />
               )}
             </Button>
           </div>
@@ -108,7 +108,7 @@ const SearchPage: React.FC = () => {
         
         {!searching && hasSearched && results.length === 0 && (
           <EmptyState
-            icon="😕"
+            icon="zi-info-circle"
             title="Không tìm thấy shop"
             description="Thử tìm kiếm với từ khóa khác hoặc thay đổi phương thức tìm kiếm"
           />
@@ -116,7 +116,7 @@ const SearchPage: React.FC = () => {
 
         {!searching && !hasSearched && (
           <EmptyState
-            icon="🔍"
+            icon="zi-search"
             title="Bắt đầu tìm kiếm"
             description="Nhập thông tin shop để kiểm tra độ uy tín"
           />
@@ -138,7 +138,7 @@ const SearchPage: React.FC = () => {
                   <div className="flex items-start gap-3">
                     {/* Platform Icon */}
                     <div className="text-3xl">
-                      {getPlatformIcon(shop.platform)}
+                      <Icon icon={getPlatformIconName(shop.platform)} size={28} />
                     </div>
 
                     {/* Shop Info */}
@@ -156,7 +156,7 @@ const SearchPage: React.FC = () => {
                         </div>
                         {shop.verified && (
                           <span className="badge verified text-xs">
-                            ✓
+                            <Icon icon="zi-verified" />
                           </span>
                         )}
                       </div>

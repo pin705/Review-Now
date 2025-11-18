@@ -129,14 +129,15 @@ Review-Now/
 
 ## 🔄 Roadmap
 
-### Phase 1 (Current) ✅
+### Phase 1 ✅
 - [x] Giao diện 3 màn hình chính
 - [x] Mock data service
 - [x] Responsive mobile design
 - [x] Basic navigation
 
-### Phase 2 (Next)
-- [ ] Kết nối API thật
+### Phase 2 (Current) ✅
+- [x] Kết nối API thật với Nitro + MongoDB backend
+- [x] Tích hợp backend cho toàn bộ hệ thống
 - [ ] Authentication với Zalo
 - [ ] Upload hình ảnh cho review
 - [ ] Share kết quả lên Zalo
@@ -152,12 +153,48 @@ Review-Now/
 
 ## 👨‍💻 Phát triển
 
-### Mock Data
-Hiện tại app sử dụng mock data trong `src/services/shop.service.ts`. Để kết nối API thực:
+### Backend API
+App đã được tích hợp với backend Nitro + MongoDB. Xem `review-now-backend/README.md` để biết chi tiết.
 
-1. Tạo file `.env` với API endpoint
-2. Cập nhật service methods
-3. Xử lý authentication
+**Khởi động backend:**
+
+```bash
+cd review-now-backend
+
+# Cài đặt dependencies (lần đầu)
+npm install
+
+# Seed dữ liệu mẫu
+npm run seed
+
+# Chạy dev server
+npm run dev
+```
+
+Backend sẽ chạy tại `http://localhost:3000`
+
+### Frontend
+
+**Cấu hình API URL:**
+
+Tạo file `.env` trong thư mục root:
+
+```env
+VITE_API_URL=http://localhost:3000/api
+```
+
+**Khởi động frontend:**
+
+```bash
+# Cài đặt dependencies
+npm install
+
+# Build CSS
+npm run build:css
+
+# Chạy Zalo Mini App dev server
+npm start
+```
 
 ### Thêm tính năng mới
 1. Tạo component trong `src/components/`

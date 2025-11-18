@@ -1,38 +1,43 @@
 import { Shop, Review, Report, SearchResult, SearchType } from '../types';
-import { mockShops, mockReviews } from '../data/mockData';
 
-// Service sẽ được thay thế bằng API thực tế sau
+// Backend API URL - can be configured via environment variable
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+// Service integrated with Nitro + MongoDB backend
 export const shopService = {
   // Tìm kiếm shop
   searchShops: async (
     query: string,
     type: SearchType
   ): Promise<SearchResult> => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    const filtered = mockShops.filter(shop => {
-      if (type === 'phone') {
-        return shop.phone?.includes(query);
-      } else if (type === 'name') {
-        return shop.name.toLowerCase().includes(query.toLowerCase());
-      } else if (type === 'link') {
-        return shop.url?.toLowerCase().includes(query.toLowerCase());
+    try {
+      const response = await fetch(`${API_BASE_URL}/shops/search?q=${encodeURIComponent(query)}&type=${type}`);
+      if (!response.ok) {
+        throw new Error('Failed to search shops');
       }
-      return false;
-    });
-
-    return {
-      shops: filtered,
-      hasMore: false,
-      total: filtered.length
-    };
+      return await response.json();
+    } catch (error) {
+      console.error('Error searching shops:', error);
+      return {
+        shops: [],
+        hasMore: false,
+        total: 0
+      };
+    }
   },
 
   // Lấy thông tin chi tiết shop
   getShopById: async (id: string): Promise<Shop | null> => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return mockShops.find(shop => shop.id === id) || null;
+    try {
+      const response = await fetch(`${API_BASE_URL}/shops/${id}`);
+      if (!response.ok) {
+        return null;
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching shop:', error);
+      return null;
+    }
   },
 
   // Lấy reviews của shop
@@ -40,51 +45,87 @@ export const shopService = {
     shopId: string,
     type?: 'positive' | 'negative'
   ): Promise<Review[]> => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    let reviews = mockReviews.filter(r => r.shopId === shopId);
-    if (type) {
-      reviews = reviews.filter(r => r.type === type);
+    try {
+      const url = type 
+        ? `${API_BASE_URL}/shops/${shopId}/reviews?type=${type}`
+        : `${API_BASE_URL}/shops/${shopId}/reviews`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Failed to fetch reviews');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      return [];
     }
-    return reviews;
   },
 
   // Thêm review mới
   addReview: async (review: Omit<Review, 'id' | 'createdAt'>): Promise<Review> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    const newReview: Review = {
-      ...review,
-      id: `r${Date.now()}`,
-      createdAt: new Date().toISOString(),
-    };
-    mockReviews.push(newReview);
-    return newReview;
+    try {
+      const response = await fetch(`${API_BASE_URL}/reviews`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(review),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add review');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error adding review:', error);
+      throw error;
+    }
   },
 
   // Thêm report
   addReport: async (report: Omit<Report, 'id' | 'createdAt' | 'status'>): Promise<Report> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    const newReport: Report = {
-      ...report,
-      id: `rp${Date.now()}`,
-      createdAt: new Date().toISOString(),
-      status: 'pending'
-    };
-    return newReport;
+    try {
+      const response = await fetch(`${API_BASE_URL}/reports`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(report),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add report');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error adding report:', error);
+      throw error;
+    }
   },
 
   // Lấy tất cả reviews gần đây
   getAllRecentReviews: async (): Promise<Review[]> => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    // Sort by createdAt descending
-    return [...mockReviews].sort((a, b) => 
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    try {
+      const response = await fetch(`${API_BASE_URL}/reviews`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch reviews');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching recent reviews:', error);
+      return [];
+    }
   },
 
   // Lấy tất cả shops
   getAllShops: async (): Promise<Shop[]> => {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return mockShops;
+    try {
+      const response = await fetch(`${API_BASE_URL}/shops`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch shops');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching shops:', error);
+      return [];
+    }
   },
 
   // Tạo shop mới
@@ -95,21 +136,21 @@ export const shopService = {
     platform: string;
     verified: boolean;
   }): Promise<Shop> => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    const newShop: Shop = {
-      id: `s${Date.now()}`,
-      name: shopData.name,
-      phone: shopData.phone,
-      url: shopData.link,
-      platform: shopData.platform,
-      verified: shopData.verified,
-      trustScore: 50, // Default score, will be calculated based on reviews
-      totalReviews: 0,
-      positiveReviews: 0,
-      negativeReviews: 0,
-      createdAt: new Date().toISOString(),
-    };
-    mockShops.push(newShop);
-    return newShop;
+    try {
+      const response = await fetch(`${API_BASE_URL}/shops`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(shopData),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to create shop');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating shop:', error);
+      throw error;
+    }
   }
 };

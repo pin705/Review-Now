@@ -1,0 +1,23 @@
+{
+  "app": {
+    "title": "Review Now",
+    "textColor": "black",
+    "leftButton": "none",
+    "statusBar": "transparent",
+    "selfControlLoading": false,
+    "hideAndroidBottomNavigationBar": false,
+    "hideIOSSafeAreaBottom": false,
+    "actionBarHidden": true
+  },
+  "pages": [],
+  "listCSS": [],
+  "listSyncJS": [],
+  "listAsyncJS": [],
+  "template": {
+    "name": "review-now",
+    "primaryColor": "#3b82f6",
+    "prefixCurrencySymbol": false,
+    "currencySymbol": "đ",
+    "headerLogo": ""
+  }
+}

@@ -1,0 +1,93 @@
+import { useVirtualKeyboardVisible } from "hooks";
+import React, { FC, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { MenuItem } from "types/menu";
+import { BottomNavigation, Icon, Box } from "zmp-ui";
+
+const tabs: Record<string, MenuItem> = {
+  "/": {
+    label: "Trang chủ",
+    icon: <Icon icon="zi-home" />,
+  },
+  "/history": {
+    label: "Lịch sử",
+    icon: <Icon icon="zi-calendar" />,
+  },
+  "/reports": {
+    label: "Báo cáo",
+    icon: <Icon icon="zi-poll" />,
+  },
+  "/settings": {
+    label: "Cài đặt",
+    icon: <Icon icon="zi-setting" />,
+  },
+};
+
+export type TabKeys = keyof typeof tabs;
+
+export const NO_BOTTOM_NAVIGATION_PAGES = [
+  "/add-transaction",
+  "/manage-wallets",
+  "/manage-categories",
+  "/guide",
+];
+
+export const Navigation: FC = () => {
+  const keyboardVisible = useVirtualKeyboardVisible();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const noBottomNav = useMemo(() => {
+    return NO_BOTTOM_NAVIGATION_PAGES.includes(location.pathname);
+  }, [location]);
+
+  if (noBottomNav || keyboardVisible) {
+    return <></>;
+  }
+
+  const tabKeys = Object.keys(tabs) as TabKeys[];
+  const firstHalf = tabKeys.slice(0, 2);
+  const secondHalf = tabKeys.slice(2);
+
+  return (
+    <Box className="relative">
+      {/* Floating Add Button */}
+      <Box
+        className="absolute left-1/2 -translate-x-1/2 -top-8 z-50"
+        onClick={() => navigate("/add-transaction")}
+      >
+        <Box className="bg-[#eab308] w-16 h-16 rounded-full shadow-xl flex items-center justify-center cursor-pointer active:scale-95 transition-transform border-4 border-white">
+          <Icon icon="zi-plus" size={32} className="text-white" />
+        </Box>
+      </Box>
+
+      <BottomNavigation
+        id="footer"
+        activeKey={location.pathname}
+        onChange={navigate}
+        className="z-50"
+      >
+        {firstHalf.map((path: TabKeys) => (
+          <BottomNavigation.Item
+            key={path}
+            label={tabs[path].label}
+            icon={tabs[path].icon}
+            activeIcon={tabs[path].activeIcon}
+          />
+        ))}
+        
+        {/* Spacer for floating button */}
+        <Box className="flex-1" style={{ minWidth: '80px' }} />
+        
+        {secondHalf.map((path: TabKeys) => (
+          <BottomNavigation.Item
+            key={path}
+            label={tabs[path].label}
+            icon={tabs[path].icon}
+            activeIcon={tabs[path].activeIcon}
+          />
+        ))}
+      </BottomNavigation>
+    </Box>
+  );
+};

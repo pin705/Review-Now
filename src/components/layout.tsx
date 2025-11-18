@@ -16,6 +16,7 @@ import ReviewHistoryPage from "../pages/ReviewHistoryPage";
 import PersonalInfoPage from "../pages/PersonalInfoPage";
 import UserGuidePage from "../pages/UserGuidePage";
 import TermsAndPrivacyPage from "../pages/TermsAndPrivacyPage";
+import AdminPage from "../pages/AdminPage";
 
 if (import.meta.env.DEV) {
   document.body.style.setProperty("--zaui-safe-area-inset-top", "24px");
@@ -46,6 +47,7 @@ export const Layout: FC = () => {
           <Route path="/personal-info" element={<PersonalInfoPage />} />
           <Route path="/user-guide" element={<UserGuidePage />} />
           <Route path="/terms-privacy" element={<TermsAndPrivacyPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </Box>
       <Navigation />

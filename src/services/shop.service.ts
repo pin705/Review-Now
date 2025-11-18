@@ -211,5 +211,92 @@ export const shopService = {
       console.error('Error uploading image:', error);
       throw error;
     }
+  },
+
+  // Admin functions
+  getAllReports: async (): Promise<Report[]> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/reports`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch reports');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching reports:', error);
+      return [];
+    }
+  },
+
+  getAllReviews: async (): Promise<Review[]> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/reviews`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch all reviews');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching all reviews:', error);
+      return [];
+    }
+  },
+
+  updateReportStatus: async (reportId: string, status: 'verified' | 'rejected'): Promise<void> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/reports/${reportId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update report status');
+      }
+    } catch (error) {
+      console.error('Error updating report status:', error);
+      throw error;
+    }
+  },
+
+  deleteShop: async (shopId: string): Promise<void> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/shops/${shopId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete shop');
+      }
+    } catch (error) {
+      console.error('Error deleting shop:', error);
+      throw error;
+    }
+  },
+
+  deleteReview: async (reviewId: string): Promise<void> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/reviews/${reviewId}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete review');
+      }
+    } catch (error) {
+      console.error('Error deleting review:', error);
+      throw error;
+    }
+  },
+
+  approveReview: async (reviewId: string): Promise<void> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/reviews/${reviewId}/approve`, {
+        method: 'POST',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to approve review');
+      }
+    } catch (error) {
+      console.error('Error approving review:', error);
+      throw error;
+    }
   }
 };

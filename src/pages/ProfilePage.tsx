@@ -84,6 +84,20 @@ const ProfilePage: FC = () => {
               </Box>
               <Icon icon="zi-chevron-right" />
             </Box>
+
+            {/* Admin Link */}
+            <Box
+              className="flex items-center gap-3 py-3 px-4 active:bg-gray-100 cursor-pointer"
+              onClick={() => navigate('/admin')}
+            >
+              <Icon icon="zi-setting" className="text-purple-600" />
+              <Box className="flex-1">
+                <Text size="small" className="font-medium text-purple-600">
+                  Quản trị hệ thống
+                </Text>
+              </Box>
+              <Icon icon="zi-chevron-right" />
+            </Box>
           </Box>
         </Section>
       </Box>

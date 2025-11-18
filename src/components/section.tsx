@@ -16,9 +16,9 @@ export const Section: FC<PropsWithChildren<SectionProps>> = ({
 }) => {
   return (
     <Box
-      className={`bg-white ${padding === "all" ? "p-4 space-y-4" : ""} ${
-        padding === "title-only" ? "py-4 space-y-4" : ""
-      }`}
+      className={`bg-white rounded-xl shadow-sm ${
+        padding === "all" ? "p-4 space-y-4" : ""
+      } ${padding === "title-only" ? "py-4 space-y-4" : ""}`}
       {...props}
     >
       <Text.Title className={`${padding === "title-only" ? "px-4" : ""}`}>

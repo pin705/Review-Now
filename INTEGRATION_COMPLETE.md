@@ -73,7 +73,7 @@ Tất cả endpoints đều hoạt động với format RESTful:
 ## 🔄 Data Flow
 
 ```
-Frontend (Zalo Mini App)
+Frontend (Zalo Review Now)
     ↓ HTTP Request
 API Layer (Nitro Routes)
     ↓ Mongoose ORM

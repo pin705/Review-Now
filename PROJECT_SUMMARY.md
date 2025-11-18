@@ -47,7 +47,7 @@ Total: ~1050 lines
 
 ### Trước khi tích hợp
 ```
-Frontend (Zalo Mini App)
+Frontend (Zalo Review Now)
     ↓
 Mock Data Service (src/data/mockData.ts)
     ↓
@@ -56,7 +56,7 @@ In-memory arrays
 
 ### Sau khi tích hợp
 ```
-Frontend (Zalo Mini App)
+Frontend (Zalo Review Now)
     ↓ HTTP/REST API
 Backend (Nitro Server)
     ↓ Mongoose ORM

@@ -23,7 +23,7 @@ export const FloatingActionButton: FC = () => {
     <div 
       style={{
         position: "fixed",
-        bottom: "80px",
+        bottom: "72px",
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 999,
@@ -44,7 +44,7 @@ export const FloatingActionButton: FC = () => {
           boxShadow: "0 4px 12px rgba(234, 179, 8, 0.4)",
         }}
       >
-        Thêm đánh giá
+        Thêm shop mới
       </Button>
     </div>
   );

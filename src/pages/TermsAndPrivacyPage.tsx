@@ -32,7 +32,7 @@ const TermsAndPrivacyPage: React.FC = () => {
                 1. Chấp nhận điều khoản
               </Text>
               <Text size="small" className="text-gray-600">
-                Bằng cách sử dụng Mini App Review Now, người dùng đồng ý tuân thủ các điều khoản này 
+                Bằng cách sử dụng Review Now Review Now, người dùng đồng ý tuân thủ các điều khoản này 
                 và Chính sách Quyền riêng tư.
               </Text>
             </Box>
@@ -43,11 +43,11 @@ const TermsAndPrivacyPage: React.FC = () => {
                 2. Mục đích Ứng dụng
               </Text>
               <Text size="small" className="text-gray-600 mb-2">
-                Mini App được cung cấp cho mục đích duy nhất là thu thập và hiển thị đánh giá cộng đồng 
+                Review Now được cung cấp cho mục đích duy nhất là thu thập và hiển thị đánh giá cộng đồng 
                 về độ tin cậy của các Cửa hàng/Tài khoản kinh doanh trực tuyến.
               </Text>
               <Text size="small" className="text-gray-600">
-                Mini App chỉ đóng vai trò trung gian trong việc cung cấp thông tin dựa trên dữ liệu cộng đồng 
+                Review Now chỉ đóng vai trò trung gian trong việc cung cấp thông tin dựa trên dữ liệu cộng đồng 
                 và không phải là bên trung gian giao dịch.
               </Text>
             </Box>
@@ -82,7 +82,7 @@ const TermsAndPrivacyPage: React.FC = () => {
                   </Text>
                   <Text size="xSmall" className="text-gray-600">
                     Chủ Shop có quyền phản hồi công khai các đánh giá và báo cáo, đồng thời yêu cầu 
-                    Admin Mini App xem xét xóa các đánh giá được chứng minh là sai sự thật.
+                    Admin Review Now xem xét xóa các đánh giá được chứng minh là sai sự thật.
                   </Text>
                 </Box>
               </Box>
@@ -95,11 +95,11 @@ const TermsAndPrivacyPage: React.FC = () => {
               </Text>
               <Box className="space-y-2">
                 <Text size="small" className="text-gray-600">
-                  • Mini App không chịu trách nhiệm về bất kỳ tổn thất tài chính hoặc thiệt hại nào 
+                  • Review Now không chịu trách nhiệm về bất kỳ tổn thất tài chính hoặc thiệt hại nào 
                   phát sinh từ giao dịch giữa người dùng và các Cửa hàng được đánh giá.
                 </Text>
                 <Text size="small" className="text-gray-600">
-                  • Mini App không đảm bảo tính chính xác 100% của Điểm tin cậy, vì số này phụ thuộc 
+                  • Review Now không đảm bảo tính chính xác 100% của Điểm tin cậy, vì số này phụ thuộc 
                   vào dữ liệu do cộng đồng cung cấp.
                 </Text>
               </Box>
@@ -204,12 +204,12 @@ const TermsAndPrivacyPage: React.FC = () => {
                 4. Bảo mật dữ liệu
               </Text>
               <Text size="small" className="text-gray-600 mb-2">
-                Mini App cam kết áp dụng các tiêu chuẩn bảo mật an toàn để bảo vệ dữ liệu người dùng 
+                Review Now cam kết áp dụng các tiêu chuẩn bảo mật an toàn để bảo vệ dữ liệu người dùng 
                 khỏi quyền truy cập trái phép hoặc mất mát.
               </Text>
               <Text size="small" className="text-gray-600">
                 Mọi dữ liệu thanh toán (qua Zalo Pay) đều được xử lý trực tiếp bởi Zalo Pay, 
-                Mini App không lưu trữ bất kỳ thông tin thẻ hoặc tài khoản ngân hàng nào.
+                Review Now không lưu trữ bất kỳ thông tin thẻ hoặc tài khoản ngân hàng nào.
               </Text>
             </Box>
 

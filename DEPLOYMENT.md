@@ -61,11 +61,11 @@ cp .env.example .env
 # Build CSS
 npm run build:css
 
-# Khởi động Zalo Mini App development server
+# Khởi động Zalo Review Now development server
 npm start
 ```
 
-Frontend sẽ chạy tại cổng được cấu hình bởi Zalo Mini App (thường là `http://localhost:3000` hoặc khác).
+Frontend sẽ chạy tại cổng được cấu hình bởi Zalo Review Now (thường là `http://localhost:3000` hoặc khác).
 
 ## 🔧 Cấu hình
 

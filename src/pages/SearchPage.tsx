@@ -75,7 +75,7 @@ const SearchPage: React.FC = () => {
 
       <Box className="space-y-4">
         {/* Stats Cards */}
-        <Box className="grid grid-cols-3 gap-3">
+        <Box className="grid grid-cols-3 gap-3 px-4">
           <Box className="stats-card" style={{ '--from-color': '#fef3c7' } as any}>
             <Text size="xLarge" className="font-bold text-[#eab308]">
               {stats.totalShops}
@@ -204,9 +204,16 @@ const SearchPage: React.FC = () => {
                     <Box className="flex-1 min-w-0">
                       <Box className="flex items-start justify-between gap-2 mb-2">
                         <Text className="font-semibold text-gray-900">{shop.name}</Text>
+                      </Box>
+                      <Box className="flex flex-wrap gap-2 mb-2">
+                        <Box className="badge badge-yellow">
+                          <Icon icon={getPlatformIconName(shop.platform)} size={14} />
+                          {shop.platform}
+                        </Box>
                         {shop.verified && (
-                          <Box className="">
-                            <Icon icon="zi-list-1" size={14} />
+                          <Box className="badge badge-verified">
+                            <Icon icon="zi-check-circle-solid" size={14} />
+                            Đã xác thực
                           </Box>
                         )}
                       </Box>

@@ -1,11 +1,11 @@
-# Review Now - Mini App Kiểm Tra Độ Uy Tín Shop Online
+# Review Now - Review Now Kiểm Tra Độ Uy Tín Shop Online
 
 ![Review Now](https://img.shields.io/badge/Zalo-Mini_App-blue)
 ![Version](https://img.shields.io/badge/version-1.0.0-green)
 
 ## 📱 Giới thiệu
 
-**Review Now** là Mini App trên nền tảng Zalo giúp người dùng kiểm tra độ uy tín của các shop online trước khi mua hàng. Ứng dụng cung cấp:
+**Review Now** là Review Now trên nền tảng Zalo giúp người dùng kiểm tra độ uy tín của các shop online trước khi mua hàng. Ứng dụng cung cấp:
 
 - ✅ Điểm uy tín từ 0-100
 - 📊 Thống kê đánh giá tích cực/tiêu cực
@@ -68,9 +68,9 @@ npm start
 ## 🚀 Scripts
 
 ```bash
-npm start          # Chạy Zalo Mini App development server
+npm start          # Chạy Zalo Review Now development server
 npm run build:css  # Build Tailwind CSS
-npm run deploy     # Deploy lên Zalo Mini App platform
+npm run deploy     # Deploy lên Zalo Review Now platform
 ```
 
 ## 📂 Cấu trúc dự án
@@ -98,7 +98,7 @@ Review-Now/
 │   └── css/                # Styles
 │       ├── tailwind.css
 │       └── app.scss
-├── app-config.json         # Zalo Mini App config
+├── app-config.json         # Zalo Review Now config
 ├── package.json
 └── README.md
 ```
@@ -192,7 +192,7 @@ npm install
 # Build CSS
 npm run build:css
 
-# Chạy Zalo Mini App dev server
+# Chạy Zalo Review Now dev server
 npm start
 ```
 
@@ -208,4 +208,4 @@ UNLICENSED - Private project
 
 ---
 
-Made with ❤️ for Zalo Mini App Platform
+Made with ❤️ for Zalo Review Now Platform

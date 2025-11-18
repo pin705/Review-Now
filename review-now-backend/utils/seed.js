@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { Shop } from './models/Shop.js';
-import { Review } from './models/Review.js';
+import { Shop } from '../models/Shop.js';
+import { Review } from '../models/Review.js';
 
 const mockShopsData = [
   {
@@ -69,7 +69,7 @@ const mockShopsData = [
   }
 ];
 
-async function seedDatabase() {
+export async function seedDatabase() {
   try {
     const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/review-now';
     await mongoose.connect(mongoUri);
@@ -204,4 +204,3 @@ async function seedDatabase() {
   }
 }
 
-seedDatabase();

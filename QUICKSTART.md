@@ -64,7 +64,7 @@ cp .env.example .env
 # Build CSS
 npm run build:css
 
-# Khởi động Zalo Mini App
+# Khởi động Zalo Review Now
 npm start
 ```
 
@@ -101,7 +101,7 @@ Mở browser và truy cập:
 
 ## 📱 Sử dụng App
 
-1. Mở Zalo Mini App (theo hướng dẫn của `npm start`)
+1. Mở Zalo Review Now (theo hướng dẫn của `npm start`)
 2. Tìm kiếm shop bằng số điện thoại: `0901234567`
 3. Xem thông tin shop và reviews
 4. Thêm review mới

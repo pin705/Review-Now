@@ -1,6 +1,6 @@
 # Review Now Backend
 
-Backend API cho Review Now Mini App sử dụng Nitro + MongoDB.
+Backend API cho Review Now Review Now sử dụng Nitro + MongoDB.
 
 ## 🛠️ Công nghệ
 

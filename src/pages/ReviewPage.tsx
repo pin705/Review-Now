@@ -23,6 +23,12 @@ const ReviewPage: React.FC = () => {
   const [reviewType, setReviewType] = useState<'review' | 'report'>('review');
 
   useEffect(() => {
+    // Set initial type from query string if provided
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type');
+    if (type === 'report' || type === 'review') {
+      setReviewType(type);
+    }
     loadShop();
   }, [shopId]);
 
@@ -121,22 +127,25 @@ const ReviewPage: React.FC = () => {
           )}
         </Box>
 
-        {/* Type Selector */}
-        <Box className="flex gap-2">
+        {/* Type Selector - segmented */}
+        <Box className="bg-gray-100 p-1 rounded-lg flex">
           <Button
             onClick={() => setReviewType('review')}
-            variant={reviewType === 'review' ? 'primary' : 'secondary'}
+            variant={reviewType === 'review' ? 'primary' : 'tertiary'}
             fullWidth
+            size="small"
             icon={<Icon icon="zi-star-solid" />}
+            className={reviewType === 'review' ? '' : '!text-gray-700'}
           >
             Đánh giá
           </Button>
           <Button
             onClick={() => setReviewType('report')}
-            variant={reviewType === 'report' ? 'primary' : 'secondary'}
+            variant={reviewType === 'report' ? 'primary' : 'tertiary'}
             fullWidth
+            size="small"
             icon={<Icon icon="zi-warning-circle" />}
-            className={reviewType === 'report' ? 'bg-red-500 hover:bg-red-600' : ''}
+            className={reviewType === 'report' ? '!bg-red-500 hover:!bg-red-600' : '!text-gray-700'}
           >
             Báo cáo
           </Button>

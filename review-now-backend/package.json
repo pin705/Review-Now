@@ -4,7 +4,7 @@
     "build": "nitro build",
     "dev": "nitro dev",
     "preview": "npx srvx --prod .output/",
-    "seed": "node seed.js"
+    "seed": "node utils/seed.js"
   },
   "devDependencies": {
     "nitro": "latest",

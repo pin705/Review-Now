@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router";
 import { Box } from "zmp-ui";
 import { getSystemInfo } from "zmp-sdk";
 import { Navigation } from "./navigation";
-import { FloatingActionButton } from "./FloatingActionButton";
 
 // Pages
 import HomePage from "../pages/HomePage";
@@ -49,7 +48,6 @@ export const Layout: FC = () => {
           <Route path="/terms-privacy" element={<TermsAndPrivacyPage />} />
         </Routes>
       </Box>
-      <FloatingActionButton />
       <Navigation />
     </Box>
   );

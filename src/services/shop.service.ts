@@ -1,7 +1,7 @@
 import { Shop, Review, Report, SearchResult, SearchType } from '../types';
 
 // Backend API URL - can be configured via environment variable
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3005/api';
 
 // Service integrated with Nitro + MongoDB backend
 export const shopService = {

@@ -158,10 +158,10 @@ const QuickActions: FC = () => {
   const navigate = useNavigate();
 
   const actions = [
-    { icon: "zi-add-story", label: "Đánh giá shop", path: "/review/new" },
+    { icon: "zi-add-story", label: "Đánh giá shop", path: "/search" },
     { icon: "zi-star", label: "Đánh giá gần đây", path: "/recent" },
     { icon: "zi-search", label: "Tìm kiếm", path: "/search" },
-    { icon: "zi-help-circle", label: "Hướng dẫn", path: "/" },
+    { icon: "zi-help-circle", label: "Hướng dẫn", path: "/user-guide" },
   ];
 
   return (

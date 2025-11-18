@@ -22,7 +22,7 @@ App sẽ chạy tại cổng mặc định của Zalo Mini Program. Mở Zalo De
 ## 📝 Checklist Trước Khi Chạy
 
 - ✅ Node.js version >= 14
-- ✅ Đã cài đặt Zalo Mini App DevTools
+- ✅ Đã cài đặt Zalo Review Now DevTools
 - ✅ Đã chạy `npm install`
 - ✅ Đã chạy `npm run build:css`
 

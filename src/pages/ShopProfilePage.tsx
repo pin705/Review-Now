@@ -73,7 +73,7 @@ const ShopProfilePage: React.FC = () => {
     <Page className="bg-gray-50">
       <Header title="Chi tiết shop" showBackIcon={true} onBackClick={() => navigate(-1)} />
 
-      <Box className="page-content-with-header">
+      <Box className="page-content-with-header space-y-4">
         {/* Shop Basic Info */}
         <Box className="card fade-in">
           <Box className="flex items-start gap-3 mb-4">
@@ -124,16 +124,28 @@ const ShopProfilePage: React.FC = () => {
         {/* Trust Score */}
         <TrustScoreCard shop={shop} />
 
-        {/* Add Review Button */}
-        <Button
-          onClick={() => navigate(`/review/${shop.id}`)}
-          variant="primary"
-          size="medium"
-          fullWidth
-          icon={<Icon icon="zi-edit" />}
-        >
-          Đánh giá shop này
-        </Button>
+        {/* Actions */}
+        <Box className="flex items-center gap-3">
+          <Button
+            onClick={() => navigate(`/review/${shop.id}?type=review`)}
+            variant="primary"
+            size="medium"
+            fullWidth
+            icon={<Icon icon="zi-edit" />}
+          >
+            Đánh giá
+          </Button>
+          <Button
+            onClick={() => navigate(`/review/${shop.id}?type=report`)}
+            variant="secondary"
+            size="medium"
+            fullWidth
+            icon={<Icon icon="zi-warning-circle" />}
+            className="!bg-red-50 !text-red-600 hover:!bg-red-100"
+          >
+            Báo cáo
+          </Button>
+        </Box>
 
         {/* Reviews Section */}
         <Box className="card">

@@ -8,7 +8,7 @@ const ProfilePage: FC = () => {
 
   return (
     <Page className="bg-background">
-      <Header showBackIcon={false} title="&nbsp;" />
+      <Header  showBackIcon={false} title="&nbsp;" />
       
       <Box className="page-content-with-header">
         {/* User Info Card */}

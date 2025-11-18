@@ -44,7 +44,7 @@ export const FloatingActionButton: FC = () => {
           boxShadow: "0 4px 12px rgba(234, 179, 8, 0.4)",
         }}
       >
-        Thêm shop mới
+        THÊM SHOP MỚI
       </Button>
     </div>
   );

@@ -128,7 +128,7 @@ const ReviewPage: React.FC = () => {
         </Box>
 
         {/* Type Selector - segmented */}
-        <Box className="bg-gray-100 p-1 rounded-lg flex">
+        <Box className="bg-gray-100 p-1 rounded-lg flex mt-4">
           <Button
             onClick={() => setReviewType('review')}
             variant={reviewType === 'review' ? 'primary' : 'tertiary'}
@@ -153,7 +153,7 @@ const ReviewPage: React.FC = () => {
 
         {/* Rating (only for review) */}
         {reviewType === 'review' && (
-          <Box className="card fade-in">
+          <Box className="card fade-in mt-4">
             <h3 className="card-header">Đánh giá của bạn</h3>
             <Box className="flex justify-center gap-3 py-4">
               {[1, 2, 3, 4, 5].map((star) => (
@@ -181,7 +181,7 @@ const ReviewPage: React.FC = () => {
         )}
 
         {/* Content */}
-        <Box className="card">
+        <Box className="card mt-4">
           <h3 className="card-header">
             {reviewType === 'review' ? 'Chia sẻ trải nghiệm của bạn' : 'Mô tả vấn đề'}
           </h3>
@@ -202,7 +202,8 @@ const ReviewPage: React.FC = () => {
         </Box>
 
         {/* Submit Button */}
-        <Button
+        <Box className='mt-4'>
+          <Button
           onClick={handleSubmit}
           disabled={!content.trim() || submitting}
           variant="primary"
@@ -213,9 +214,10 @@ const ReviewPage: React.FC = () => {
         >
           {reviewType === 'review' ? 'Gửi đánh giá' : 'Gửi báo cáo'}
         </Button>
+        </Box>
 
         {/* Guidelines */}
-        <Box className="card bg-yellow-50 border-yellow-100">
+        <Box className="card bg-yellow-50 border-yellow-100 mt-4">
           <h4 className="font-medium text-yellow-900 mb-2 flex items-center gap-1">
             <Icon icon="zi-info-circle" size={16} />
             Lưu ý khi {reviewType === 'review' ? 'đánh giá' : 'báo cáo'}

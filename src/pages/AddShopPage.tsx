@@ -287,7 +287,8 @@ const AddShopPage: React.FC = () => {
 
         {/* Validation Summary */}
         {!canSubmit && !submitting && (
-          <Box className="card bg-yellow-50 border-yellow-200">
+          <div className="pb-12">
+            <Box className="card bg-yellow-50 border-yellow-200">
             <Text size="xSmall" className="font-medium text-yellow-900 mb-2">
               Vui lòng hoàn thiện các thông tin:
             </Text>
@@ -312,6 +313,7 @@ const AddShopPage: React.FC = () => {
               )}
             </Box>
           </Box>
+          </div>
         )}
       </Box>
     </Page>

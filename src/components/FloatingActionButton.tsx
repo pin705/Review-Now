@@ -8,7 +8,8 @@ export const FloatingActionButton: FC = () => {
 
   // Hide on detail pages and review page
   const hideButton = location.pathname.startsWith("/shop") || 
-                     location.pathname.startsWith("/review");
+                     location.pathname.startsWith("/review") ||
+                     location.pathname.startsWith("/add-shop");
 
   if (hideButton) {
     return null;

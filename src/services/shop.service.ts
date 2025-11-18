@@ -85,5 +85,31 @@ export const shopService = {
   getAllShops: async (): Promise<Shop[]> => {
     await new Promise(resolve => setTimeout(resolve, 300));
     return mockShops;
+  },
+
+  // Tạo shop mới
+  createShop: async (shopData: {
+    name: string;
+    phone: string;
+    link?: string;
+    platform: string;
+    verified: boolean;
+  }): Promise<Shop> => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const newShop: Shop = {
+      id: `s${Date.now()}`,
+      name: shopData.name,
+      phone: shopData.phone,
+      url: shopData.link,
+      platform: shopData.platform,
+      verified: shopData.verified,
+      trustScore: 50, // Default score, will be calculated based on reviews
+      totalReviews: 0,
+      positiveReviews: 0,
+      negativeReviews: 0,
+      createdAt: new Date().toISOString(),
+    };
+    mockShops.push(newShop);
+    return newShop;
   }
 };

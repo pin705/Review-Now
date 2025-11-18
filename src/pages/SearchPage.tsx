@@ -73,7 +73,7 @@ const SearchPage: React.FC = () => {
         showBackIcon={false}
       />
 
-      <Box className="page-content-with-header space-y-4">
+      <Box className="space-y-4">
         {/* Stats Cards */}
         <Box className="grid grid-cols-3 gap-3">
           <Box className="stats-card" style={{ '--from-color': '#fef3c7' } as any}>
@@ -205,7 +205,7 @@ const SearchPage: React.FC = () => {
                       <Box className="flex items-start justify-between gap-2 mb-2">
                         <Text className="font-semibold text-gray-900">{shop.name}</Text>
                         {shop.verified && (
-                          <Box className="badge-verified">
+                          <Box className="">
                             <Icon icon="zi-list-1" size={14} />
                           </Box>
                         )}
@@ -255,7 +255,7 @@ const SearchPage: React.FC = () => {
                       <Box className="flex items-center justify-between mb-2">
                         <Text className="font-semibold text-gray-900">{shop.name}</Text>
                         {shop.verified && (
-                          <Box className="badge-verified">
+                          <Box className="text-blue-500">
                             <Icon icon="zi-check-circle-solid" size={14} />
                           </Box>
                         )}

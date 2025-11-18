@@ -116,7 +116,7 @@ const AddShopPage: React.FC = () => {
         </Box>
 
         {/* Shop Name */}
-        <Section title="Tên Shop" padding="all">
+        <Section title="Tên Shop" padding="none">
           <Input
             type="text"
             placeholder="VD: Shop thời trang ABC"
@@ -136,7 +136,7 @@ const AddShopPage: React.FC = () => {
         </Section>
 
         {/* Phone Number */}
-        <Section title="Số điện thoại" padding="all">
+        <Section title="Số điện thoại" padding="none">
           <Input
             type="tel"
             placeholder="0901234567"
@@ -156,7 +156,7 @@ const AddShopPage: React.FC = () => {
         </Section>
 
         {/* Link (Optional) */}
-        <Section title="Link shop" padding="all">
+        <Section title="Link shop" padding="none">
           <Input
             type="url"
             placeholder="https://zalo.me/... hoặc facebook.com/..."
@@ -170,7 +170,7 @@ const AddShopPage: React.FC = () => {
         </Section>
 
         {/* Platform */}
-        <Section title="Nền tảng hoạt động" padding="all">
+        <Section title="Nền tảng hoạt động" padding="none">
           <Select
             placeholder="Chọn nền tảng"
             value={platform}
@@ -191,7 +191,7 @@ const AddShopPage: React.FC = () => {
         </Section>
 
         {/* Rating */}
-        <Section title="Đánh giá của bạn" padding="all">
+        <Section title="Đánh giá của bạn" padding="none">
           <Box className="flex justify-center gap-3 py-4 bg-gray-50 rounded-lg">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
@@ -222,12 +222,12 @@ const AddShopPage: React.FC = () => {
         </Section>
 
         {/* Review Content */}
-        <Section title="Nội dung đánh giá" padding="all">
+        <Section title="Nội dung đánh giá" padding="none">
           <textarea
             value={reviewContent}
             onChange={(e) => setReviewContent(e.target.value)}
             placeholder="Chia sẻ chi tiết về trải nghiệm của bạn: chất lượng sản phẩm, dịch vụ, thái độ, giao hàng..."
-            className="w-full min-h-[120px] p-3 border border-gray-200 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 outline-none transition-all resize-none"
+            className="w-full min-h-[120px] p-3 border border-gray-200 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 outline-none transition-none resize-none"
             maxLength={500}
           />
           <Box className="flex justify-between items-center mt-2">

@@ -15,7 +15,7 @@
   "listAsyncJS": [],
   "template": {
     "name": "review-now",
-    "primaryColor": "#3b82f6",
+    "primaryColor": "#eab308",
     "prefixCurrencySymbol": false,
     "currencySymbol": "đ",
     "headerLogo": ""

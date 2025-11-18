@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Input, Icon, useSnackbar } from 'zmp-ui';
-import { Shop, Review } from '../types';
+import { Page, Header, Button, Icon, Box, useSnackbar } from 'zmp-ui';
+import { Shop } from '../types';
 import { shopService } from '../services/shop.service';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useRecoilValue } from 'recoil';
@@ -86,73 +86,66 @@ const ReviewPage: React.FC = () => {
 
   if (!shop) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-600">Không tìm thấy shop</p>
-          <Button onClick={() => navigate('/')} className="mt-4">
-            Quay lại trang chủ
-          </Button>
-        </div>
-      </div>
+      <Page className="bg-gray-50">
+        <Header title="Đánh giá shop" />
+        <Box className="flex items-center justify-center min-h-[60vh]">
+          <Box className="text-center">
+            <p className="text-gray-600 mb-4">Không tìm thấy shop</p>
+            <Button onClick={() => navigate('/')} variant="secondary">
+              Quay lại trang chủ
+            </Button>
+          </Box>
+        </Box>
+      </Page>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-white border-b border-gray-200 safe-area-top">
-        <div className="flex items-center px-4 py-3">
-          <button
-            onClick={() => navigate(-1)}
-            className="mr-3 p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <Icon icon="zi-arrow-left" className="w-6 h-6 text-gray-700" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-900">
-            {reviewType === 'review' ? 'Đánh giá shop' : 'Báo cáo shop'}
-          </h1>
-        </div>
-      </div>
+    <Page className="bg-gray-50">
+      <Header 
+        title={reviewType === 'review' ? 'Đánh giá shop' : 'Báo cáo shop'}
+        showBackIcon={true}
+        onBackClick={() => navigate(-1)}
+      />
 
-      {/* Content */}
-      <div className="p-4 space-y-4">
+      <Box className="page-content-with-header">
         {/* Shop Info */}
-        <div className="card fade-in">
-          <h3 className="font-semibold text-gray-900 mb-1">{shop.name}</h3>
-          <p className="text-sm text-gray-600">
-            {shop.phone && `📱 ${shop.phone}`}
-          </p>
-        </div>
+        <Box className="card fade-in">
+          <h3 className="font-semibold text-gray-900 mb-2">{shop.name}</h3>
+          {shop.phone && (
+            <p className="text-sm text-gray-600 flex items-center gap-1">
+              <Icon icon="zi-call" size={14} />
+              {shop.phone}
+            </p>
+          )}
+        </Box>
 
         {/* Type Selector */}
-        <div className="flex gap-2">
-          <button
+        <Box className="flex gap-2">
+          <Button
             onClick={() => setReviewType('review')}
-            className={`flex-1 py-3 rounded-lg font-medium transition-all ${
-              reviewType === 'review'
-                ? 'bg-blue-500 text-white shadow-md'
-                : 'bg-white text-gray-700 border border-gray-200'
-            }`}
+            variant={reviewType === 'review' ? 'primary' : 'secondary'}
+            fullWidth
+            icon={<Icon icon="zi-star-solid" />}
           >
-            <Icon icon="zi-star-solid" className="mr-1" /> Đánh giá
-          </button>
-          <button
+            Đánh giá
+          </Button>
+          <Button
             onClick={() => setReviewType('report')}
-            className={`flex-1 py-3 rounded-lg font-medium transition-all ${
-              reviewType === 'report'
-                ? 'bg-red-500 text-white shadow-md'
-                : 'bg-white text-gray-700 border border-gray-200'
-            }`}
+            variant={reviewType === 'report' ? 'primary' : 'secondary'}
+            fullWidth
+            icon={<Icon icon="zi-warning-circle" />}
+            className={reviewType === 'report' ? 'bg-red-500 hover:bg-red-600' : ''}
           >
-            <Icon icon="zi-warning-circle" className="mr-1" /> Báo cáo
-          </button>
-        </div>
+            Báo cáo
+          </Button>
+        </Box>
 
         {/* Rating (only for review) */}
         {reviewType === 'review' && (
-          <div className="card fade-in">
+          <Box className="card fade-in">
             <h3 className="card-header">Đánh giá của bạn</h3>
-            <div className="flex justify-center gap-3 py-4">
+            <Box className="flex justify-center gap-3 py-4">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   key={star}
@@ -166,19 +159,19 @@ const ReviewPage: React.FC = () => {
                   />
                 </button>
               ))}
-            </div>
-            <div className="text-center text-gray-600">
-              {rating === 5 && 'Xuất sắc'}
+            </Box>
+            <Box className="text-center text-gray-600">
+              {rating === 5 && '⭐ Xuất sắc'}
               {rating === 4 && '😊 Tốt'}
               {rating === 3 && '😐 Trung bình'}
               {rating === 2 && '😞 Kém'}
               {rating === 1 && '😡 Rất tệ'}
-            </div>
-          </div>
+            </Box>
+          </Box>
         )}
 
         {/* Content */}
-        <div className="card">
+        <Box className="card">
           <h3 className="card-header">
             {reviewType === 'review' ? 'Chia sẻ trải nghiệm của bạn' : 'Mô tả vấn đề'}
           </h3>
@@ -190,40 +183,34 @@ const ReviewPage: React.FC = () => {
                 ? 'Hãy chia sẻ trải nghiệm mua hàng của bạn với shop này...'
                 : 'Mô tả chi tiết vấn đề bạn gặp phải với shop này...'
             }
-            className="w-full min-h-[150px] p-3 border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all resize-none"
+            className="w-full min-h-[150px] p-3 border border-gray-200 rounded-lg focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 outline-none transition-all resize-none"
             maxLength={500}
           />
-          <div className="text-right text-xs text-gray-500 mt-2">
+          <Box className="text-right text-xs text-gray-500 mt-2">
             {content.length}/500 ký tự
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* Submit Button */}
         <Button
           onClick={handleSubmit}
           disabled={!content.trim() || submitting}
-          className={`w-full py-4 rounded-lg font-semibold text-white transition-all ${
-            reviewType === 'review'
-              ? 'bg-blue-500 hover:bg-blue-600'
-              : 'bg-red-500 hover:bg-red-600'
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
+          variant="primary"
+          size="large"
+          fullWidth
+          loading={submitting}
+          className={reviewType === 'report' ? 'bg-red-500 hover:bg-red-600' : ''}
         >
-          {submitting ? (
-            <div className="flex items-center justify-center gap-2">
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              <span>Đang gửi...</span>
-            </div>
-          ) : (
-            reviewType === 'review' ? 'Gửi đánh giá' : 'Gửi báo cáo'
-          )}
+          {reviewType === 'review' ? 'Gửi đánh giá' : 'Gửi báo cáo'}
         </Button>
 
         {/* Guidelines */}
-        <div className="card bg-blue-50 border-blue-100">
-          <h4 className="font-medium text-blue-900 mb-2">
-            💡 Lưu ý khi {reviewType === 'review' ? 'đánh giá' : 'báo cáo'}
+        <Box className="card bg-yellow-50 border-yellow-100">
+          <h4 className="font-medium text-yellow-900 mb-2 flex items-center gap-1">
+            <Icon icon="zi-info-circle" size={16} />
+            Lưu ý khi {reviewType === 'review' ? 'đánh giá' : 'báo cáo'}
           </h4>
-          <ul className="text-sm text-blue-800 space-y-1">
+          <ul className="text-sm text-yellow-800 space-y-1">
             <li>• Cung cấp thông tin chính xác và trung thực</li>
             <li>• Tránh sử dụng ngôn từ thô tục, xúc phạm</li>
             <li>• Nêu rõ chi tiết trải nghiệm của bạn</li>
@@ -231,12 +218,9 @@ const ReviewPage: React.FC = () => {
               <li>• Có thể đính kèm bằng chứng nếu cần</li>
             )}
           </ul>
-        </div>
-      </div>
-
-      {/* Safe area bottom */}
-      <div className="safe-area-bottom" />
-    </div>
+        </Box>
+      </Box>
+    </Page>
   );
 };
 

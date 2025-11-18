@@ -1,93 +1,52 @@
-import { useVirtualKeyboardVisible } from "hooks";
 import React, { FC, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { MenuItem } from "types/menu";
-import { BottomNavigation, Icon, Box } from "zmp-ui";
-
-const tabs: Record<string, MenuItem> = {
-  "/": {
-    label: "Trang chủ",
-    icon: <Icon icon="zi-home" />,
-  },
-  "/history": {
-    label: "Lịch sử",
-    icon: <Icon icon="zi-calendar" />,
-  },
-  "/reports": {
-    label: "Báo cáo",
-    icon: <Icon icon="zi-poll" />,
-  },
-  "/settings": {
-    label: "Cài đặt",
-    icon: <Icon icon="zi-setting" />,
-  },
-};
-
-export type TabKeys = keyof typeof tabs;
-
-export const NO_BOTTOM_NAVIGATION_PAGES = [
-  "/add-transaction",
-  "/manage-wallets",
-  "/manage-categories",
-  "/guide",
-];
+import { BottomNavigation, Icon } from "zmp-ui";
 
 export const Navigation: FC = () => {
-  const keyboardVisible = useVirtualKeyboardVisible();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const noBottomNav = useMemo(() => {
-    return NO_BOTTOM_NAVIGATION_PAGES.includes(location.pathname);
-  }, [location]);
+  // Hide on detail pages
+  const hideNav = location.pathname.startsWith("/shop") || 
+                  location.pathname.startsWith("/review/");
 
-  if (noBottomNav || keyboardVisible) {
-    return <></>;
+  if (hideNav) {
+    return null;
   }
 
-  const tabKeys = Object.keys(tabs) as TabKeys[];
-  const firstHalf = tabKeys.slice(0, 2);
-  const secondHalf = tabKeys.slice(2);
+  // ZaUI Coffee Style - 4 Tabs Simple
+  const tabs = {
+    "/": {
+      label: "Trang chủ",
+      icon: <Icon icon="zi-home" />,
+    },
+    "/search": {
+      label: "Tìm kiếm",
+      icon: <Icon icon="zi-search" />,
+    },
+    "/recent": {
+      label: "Đánh giá",
+      icon: <Icon icon="zi-star" />,
+    },
+    "/profile": {
+      label: "Cá nhân",
+      icon: <Icon icon="zi-user" />,
+    },
+  };
 
   return (
-    <Box className="relative">
-      {/* Floating Add Button */}
-      <Box
-        className="absolute left-1/2 -translate-x-1/2 -top-8 z-50"
-        onClick={() => navigate("/add-transaction")}
-      >
-        <Box className="bg-[#eab308] w-16 h-16 rounded-full shadow-xl flex items-center justify-center cursor-pointer active:scale-95 transition-transform border-4 border-white">
-          <Icon icon="zi-plus" size={32} className="text-white" />
-        </Box>
-      </Box>
-
-      <BottomNavigation
-        id="footer"
-        activeKey={location.pathname}
-        onChange={navigate}
-        className="z-50"
-      >
-        {firstHalf.map((path: TabKeys) => (
-          <BottomNavigation.Item
-            key={path}
-            label={tabs[path].label}
-            icon={tabs[path].icon}
-            activeIcon={tabs[path].activeIcon}
-          />
-        ))}
-        
-        {/* Spacer for floating button */}
-        <Box className="flex-1" style={{ minWidth: '80px' }} />
-        
-        {secondHalf.map((path: TabKeys) => (
-          <BottomNavigation.Item
-            key={path}
-            label={tabs[path].label}
-            icon={tabs[path].icon}
-            activeIcon={tabs[path].activeIcon}
-          />
-        ))}
-      </BottomNavigation>
-    </Box>
+    <BottomNavigation
+      fixed
+      activeKey={location.pathname}
+      onChange={(key) => navigate(key)}
+    >
+      {Object.keys(tabs).map((path) => (
+        <BottomNavigation.Item
+          key={path}
+          label={tabs[path].label}
+          icon={tabs[path].icon}
+        />
+      ))}
+    </BottomNavigation>
   );
 };

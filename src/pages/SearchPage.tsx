@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Input, Button, Icon } from 'zmp-ui';
+import React, { useState, useEffect } from 'react';
+import { Page, Header, Input, Button, Icon, Box } from 'zmp-ui';
 import { useNavigate } from 'react-router-dom';
 import { shopService } from '../services/shop.service';
 import { SearchType, Shop } from '../types';
@@ -14,6 +14,34 @@ const SearchPage: React.FC = () => {
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState<Shop[]>([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [featuredShops, setFeaturedShops] = useState<Shop[]>([]);
+  const [stats, setStats] = useState({ totalShops: 0, totalReviews: 0, verified: 0 });
+
+  useEffect(() => {
+    loadFeaturedData();
+  }, []);
+
+  const loadFeaturedData = async () => {
+    try {
+      const allShops = await shopService.getAllShops();
+      // Get top 3 trusted shops
+      const featured = [...allShops]
+        .sort((a, b) => b.trustScore - a.trustScore)
+        .slice(0, 3);
+      setFeaturedShops(featured);
+
+      // Calculate stats
+      const totalReviews = allShops.reduce((sum, shop) => sum + shop.totalReviews, 0);
+      const verifiedCount = allShops.filter(s => s.verified).length;
+      setStats({
+        totalShops: allShops.length,
+        totalReviews,
+        verified: verifiedCount
+      });
+    } catch (error) {
+      console.error('Error loading featured data:', error);
+    }
+  };
 
   const handleSearch = async () => {
     if (!query.trim()) return;
@@ -36,44 +64,57 @@ const SearchPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white safe-area-top">
-        <div className="px-4 py-4">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">
-            Review Now
-          </h1>
-          <p className="text-sm text-gray-600">
-            Kiểm tra độ uy tín shop online
-          </p>
-        </div>
+    <Page className="bg-gray-50">
+      <Header
+        title="Review Now"
+        subtitle="Kiểm tra độ uy tín shop online"
+        showBackIcon={false}
+      />
 
-        {/* Search Type Selector */}
-        <div className="px-4 pb-4">
-          <div className="flex gap-2 mb-3">
+      <Box className="page-content-with-header">
+        {/* Stats Cards */}
+        <Box className="grid grid-cols-3 gap-3">
+          <Box className="stats-card from-yellow-50 to-white">
+            <Box className="text-2xl font-bold text-yellow-600">{stats.totalShops}</Box>
+            <Box className="text-xs text-gray-600 mt-1">Shops</Box>
+          </Box>
+          <Box className="stats-card from-green-50 to-white">
+            <Box className="text-2xl font-bold text-green-600">{stats.totalReviews}</Box>
+            <Box className="text-xs text-gray-600 mt-1">Đánh giá</Box>
+          </Box>
+          <Box className="stats-card from-blue-50 to-white">
+            <Box className="text-2xl font-bold text-blue-600">{stats.verified}</Box>
+            <Box className="text-xs text-gray-600 mt-1">Xác thực</Box>
+          </Box>
+        </Box>
+
+        {/* Search Section */}
+        <Box className="card">
+          <h3 className="card-header">Tìm kiếm shop</h3>
+          
+          {/* Search Type Selector */}
+          <Box className="flex gap-2 mb-3">
             {[
-              { value: 'phone' as SearchType, label: 'Số điện thoại', icon: 'zi-call' },
-              { value: 'name' as SearchType, label: 'Tên shop', icon: 'zi-shop' },
-              { value: 'link' as SearchType, label: 'Link', icon: 'zi-link' }
+              { value: 'phone' as SearchType, label: 'SĐT', iconName: 'zi-call' },
+              { value: 'name' as SearchType, label: 'Tên', iconName: 'zi-shop' },
+              { value: 'link' as SearchType, label: 'Link', iconName: 'zi-link' }
             ].map((type) => (
-              <button
+              <Button
                 key={type.value}
                 onClick={() => setSearchType(type.value)}
-                className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                  searchType === type.value
-                    ? 'bg-blue-500 text-white shadow-md'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                size="small"
+                variant={searchType === type.value ? 'primary' : 'secondary'}
+                icon={<Icon icon={type.iconName} />}
+                fullWidth
               >
-                <Icon icon={type.icon} className="mr-1" />
                 {type.label}
-              </button>
+              </Button>
             ))}
-          </div>
+          </Box>
 
           {/* Search Input */}
-          <div className="flex gap-2">
-            <div className="flex-1">
+          <Box className="flex gap-2 items-center">
+            <Box className="flex-1">
               <Input
                 type="text"
                 placeholder={
@@ -83,118 +124,121 @@ const SearchPage: React.FC = () => {
                 }
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                className="input-field"
+                onKeyPress={(e: any) => e.key === 'Enter' && handleSearch()}
               />
-            </div>
+            </Box>
             <Button
               onClick={handleSearch}
-              className="bg-blue-500 text-white px-6 rounded-lg font-medium hover:bg-blue-600 transition-colors"
-              disabled={!query.trim() || searching}
-            >
-              {searching ? (
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <Icon icon="zi-search" />
-              )}
-            </Button>
-          </div>
-        </div>
-      </div>
+              variant="primary"
+              icon={<Icon icon="zi-search" />}
+              loading={searching}
+              disabled={!query.trim()}
+            />
+          </Box>
+        </Box>
 
-      {/* Results */}
-      <div className="p-4">
+        {/* Search Results */}
         {searching && <LoadingSpinner />}
         
         {!searching && hasSearched && results.length === 0 && (
           <EmptyState
             icon="zi-info-circle"
             title="Không tìm thấy shop"
-            description="Thử tìm kiếm với từ khóa khác hoặc thay đổi phương thức tìm kiếm"
-          />
-        )}
-
-        {!searching && !hasSearched && (
-          <EmptyState
-            icon="zi-search"
-            title="Bắt đầu tìm kiếm"
-            description="Nhập thông tin shop để kiểm tra độ uy tín"
+            description="Thử tìm kiếm với từ khóa khác"
           />
         )}
 
         {!searching && results.length > 0 && (
-          <div className="space-y-3">
-            <div className="text-sm text-gray-600 mb-3">
-              Tìm thấy {results.length} kết quả
-            </div>
+          <Box className="space-y-3">
+            <h3 className="card-header">
+              Kết quả ({results.length})
+            </h3>
             {results.map((shop) => {
               const scoreLevel = getTrustScoreLevel(shop.trustScore);
               return (
-                <div
+                <Box
                   key={shop.id}
                   onClick={() => handleShopClick(shop)}
                   className="card cursor-pointer hover:shadow-md transition-all fade-in"
                 >
-                  <div className="flex items-start gap-3">
-                    {/* Platform Icon */}
-                    <div className="text-3xl">
-                      <Icon icon={getPlatformIconName(shop.platform)} size={28} />
-                    </div>
-
-                    {/* Shop Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-gray-900 mb-1">
-                            {shop.name}
-                          </h3>
-                          {shop.phone && (
-                            <p className="text-sm text-gray-600">
-                              📱 {shop.phone}
-                            </p>
-                          )}
-                        </div>
+                  <Box className="flex items-start gap-3">
+                    <Icon icon={getPlatformIconName(shop.platform)} size={32} />
+                    <Box className="flex-1 min-w-0">
+                      <Box className="flex items-start justify-between gap-2 mb-2">
+                        <h3 className="font-semibold text-gray-900">{shop.name}</h3>
                         {shop.verified && (
-                          <span className="badge verified text-xs">
-                            <Icon icon="zi-verified" />
-                          </span>
+                          <Box className="badge-verified">
+                            <Icon icon="zi-verified" size={14} />
+                          </Box>
                         )}
-                      </div>
-
-                      {/* Trust Score */}
-                      <div className="mt-3 flex items-center gap-3">
-                        <div className={`text-2xl font-bold ${
-                          scoreLevel === 'high' ? 'text-green-600' :
-                          scoreLevel === 'medium' ? 'text-yellow-600' :
-                          'text-red-600'
-                        }`}>
+                      </Box>
+                      {shop.phone && (
+                        <p className="text-sm text-gray-600 mb-3 flex items-center gap-1">
+                          <Icon icon="zi-call" size={14} />
+                          {shop.phone}
+                        </p>
+                      )}
+                      <Box className="flex items-center gap-3">
+                        <Box className={`text-2xl font-bold score-${scoreLevel}`}>
                           {shop.trustScore}
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-xs text-gray-500 mb-1">
+                        </Box>
+                        <Box className="flex-1">
+                          <Box className="text-xs text-gray-500 mb-1">
                             {shop.totalReviews} đánh giá
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-1.5">
-                            <div
-                              className={`h-1.5 rounded-full ${
-                                scoreLevel === 'high' ? 'bg-green-500' :
-                                scoreLevel === 'medium' ? 'bg-yellow-500' :
-                                'bg-red-500'
-                              }`}
+                          </Box>
+                          <Box className="w-full bg-gray-200 rounded-full h-1.5">
+                            <Box
+                              className={`h-1.5 rounded-full progress-bar-${scoreLevel}`}
                               style={{ width: `${shop.trustScore}%` }}
                             />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
               );
             })}
-          </div>
+          </Box>
         )}
-      </div>
-    </div>
+
+        {/* Featured Shops - Only show when no search */}
+        {!hasSearched && featuredShops.length > 0 && (
+          <Box className="space-y-3">
+            <Box className="flex items-center gap-2">
+              <Icon icon="zi-star-solid" className="text-yellow-500" />
+              <h3 className="font-semibold text-gray-900">Shop uy tín nhất</h3>
+            </Box>
+            {featuredShops.map((shop) => (
+              <Box
+                key={shop.id}
+                onClick={() => handleShopClick(shop)}
+                className="card cursor-pointer hover:shadow-md transition-all fade-in bg-gradient-to-br from-yellow-50 to-white border-yellow-200"
+              >
+                <Box className="flex items-start gap-3">
+                  <Icon icon={getPlatformIconName(shop.platform)} size={32} className="text-yellow-600" />
+                  <Box className="flex-1">
+                    <Box className="flex items-center justify-between mb-2">
+                      <h3 className="font-semibold text-gray-900">{shop.name}</h3>
+                      {shop.verified && (
+                        <Box className="badge-verified">
+                          <Icon icon="zi-verified" size={14} />
+                        </Box>
+                      )}
+                    </Box>
+                    <Box className="flex items-center gap-2 text-sm text-gray-600">
+                      <span className="font-bold text-green-600">{shop.trustScore}/100</span>
+                      <span>•</span>
+                      <span>{shop.totalReviews} đánh giá</span>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
+            ))}
+          </Box>
+        )}
+      </Box>
+    </Page>
   );
 };
 

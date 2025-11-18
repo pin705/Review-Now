@@ -49,13 +49,12 @@ export const shopService = {
   },
 
   // Thêm review mới
-  addReview: async (review: Omit<Review, 'id' | 'createdAt' | 'helpful'>): Promise<Review> => {
+  addReview: async (review: Omit<Review, 'id' | 'createdAt'>): Promise<Review> => {
     await new Promise(resolve => setTimeout(resolve, 500));
     const newReview: Review = {
       ...review,
       id: `r${Date.now()}`,
       createdAt: new Date().toISOString(),
-      helpful: 0
     };
     mockReviews.push(newReview);
     return newReview;
@@ -71,5 +70,20 @@ export const shopService = {
       status: 'pending'
     };
     return newReport;
+  },
+
+  // Lấy tất cả reviews gần đây
+  getAllRecentReviews: async (): Promise<Review[]> => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    // Sort by createdAt descending
+    return [...mockReviews].sort((a, b) => 
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  },
+
+  // Lấy tất cả shops
+  getAllShops: async (): Promise<Shop[]> => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    return mockShops;
   }
 };

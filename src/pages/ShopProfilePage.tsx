@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Tabs, Icon } from 'zmp-ui';
+import { Page, Header, Button, Icon, Box } from 'zmp-ui';
 import { Shop, Review } from '../types';
 import { shopService } from '../services/shop.service';
 import TrustScoreCard from '../components/TrustScoreCard';
@@ -52,85 +52,74 @@ const ShopProfilePage: React.FC = () => {
 
   if (!shop) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <EmptyState
-          icon="😕"
-          title="Không tìm thấy shop"
-          description="Shop này có thể đã bị xóa hoặc không tồn tại"
-          action={{
-            label: 'Quay lại trang chủ',
-            onClick: () => navigate('/')
-          }}
-        />
-      </div>
+      <Page className="bg-gray-50">
+        <Header title="Chi tiết shop" />
+        <Box className="flex items-center justify-center min-h-[60vh]">
+          <EmptyState
+            icon="zi-info-circle"
+            title="Không tìm thấy shop"
+            description="Shop này có thể đã bị xóa hoặc không tồn tại"
+            action={{
+              label: 'Quay lại trang chủ',
+              onClick: () => navigate('/')
+            }}
+          />
+        </Box>
+      </Page>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-white border-b border-gray-200 safe-area-top">
-        <div className="flex items-center px-4 py-3">
-          <button
-            onClick={() => navigate(-1)}
-            className="mr-3 p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors"
-          >
-            <Icon icon="zi-arrow-left" className="w-6 h-6 text-gray-700" />
-          </button>
-          <h1 className="text-lg font-semibold text-gray-900">Chi tiết shop</h1>
-        </div>
-      </div>
+    <Page className="bg-gray-50">
+      <Header title="Chi tiết shop" showBackIcon={true} onBackClick={() => navigate(-1)} />
 
-      {/* Content */}
-      <div className="p-4 space-y-4">
+      <Box className="page-content-with-header">
         {/* Shop Basic Info */}
-        <div className="card fade-in">
-          <div className="flex items-start gap-3 mb-4">
-            <div className="text-4xl">
-              <Icon icon={getPlatformIconName(shop.platform)} size={32} />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-xl font-bold text-gray-900 mb-1">
+        <Box className="card fade-in">
+          <Box className="flex items-start gap-3 mb-4">
+            <Icon icon={getPlatformIconName(shop.platform)} size={32} />
+            <Box className="flex-1">
+              <h2 className="text-xl font-bold text-gray-900 mb-2">
                 {shop.name}
               </h2>
-              <div className="flex flex-wrap gap-2">
-                <span className="badge" style={{ backgroundColor: '#e3f2fd', color: '#1976d2' }}>
+              <Box className="flex flex-wrap gap-2">
+                <Box className="badge-yellow">
                   {shop.platform}
-                </span>
+                </Box>
                 {shop.verified && (
-                  <span className="badge verified">
-                    <Icon icon="zi-verified" className="mr-1" />
+                  <Box className="badge-verified">
+                    <Icon icon="zi-check-circle" size={14} />
                     Đã xác thực
-                  </span>
+                  </Box>
                 )}
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
 
           {/* Contact Info */}
-          <div className="space-y-2 text-sm">
+          <Box className="space-y-2 text-sm">
             {shop.phone && (
-              <div className="flex items-center gap-2 text-gray-700">
-                <Icon icon="zi-call" />
+              <Box className="flex items-center gap-2 text-gray-700">
+                <Icon icon="zi-call" size={16} />
                 <span>{formatPhone(shop.phone)}</span>
-              </div>
+              </Box>
             )}
             {shop.url && (
-              <div className="flex items-center gap-2 text-gray-700">
-                <Icon icon="zi-link" />
+              <Box className="flex items-center gap-2 text-gray-700">
+                <Icon icon="zi-link" size={16} />
                 <a href={shop.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline truncate">
                   {shop.url}
                 </a>
-              </div>
+              </Box>
             )}
             {shop.createdDate && (
-              <div className="flex items-center gap-2 text-gray-600">
-                <Icon icon="zi-calendar" />
+              <Box className="flex items-center gap-2 text-gray-600">
+                <Icon icon="zi-calendar" size={16} />
                 <span>Hoạt động từ {formatDate(shop.createdDate)}</span>
-              </div>
+              </Box>
             )}
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* Trust Score */}
         <TrustScoreCard shop={shop} />
@@ -138,17 +127,20 @@ const ShopProfilePage: React.FC = () => {
         {/* Add Review Button */}
         <Button
           onClick={() => navigate(`/review/${shop.id}`)}
-          className="w-full bg-blue-500 text-white py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
+          variant="primary"
+          size="medium"
+          fullWidth
+          icon={<Icon icon="zi-edit" />}
         >
-          ✍️ Đánh giá shop này
+          Đánh giá shop này
         </Button>
 
         {/* Reviews Section */}
-        <div className="card">
+        <Box className="card">
           <h3 className="card-header">Đánh giá & Báo cáo</h3>
           
           {/* Tabs */}
-          <div className="flex gap-2 mb-4 border-b border-gray-200">
+          <Box className="flex gap-2 mb-4 border-b border-gray-200">
             {[
               { key: 'all' as const, label: 'Tất cả', count: reviews.length },
               { key: 'positive' as const, label: 'Tích cực', count: shop.positiveReviews },
@@ -159,20 +151,20 @@ const ShopProfilePage: React.FC = () => {
                 onClick={() => setActiveTab(tab.key)}
                 className={`pb-2 px-1 text-sm font-medium transition-all ${
                   activeTab === tab.key
-                    ? 'text-blue-600 border-b-2 border-blue-600'
+                    ? 'text-yellow-600 border-b-2 border-yellow-600'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
                 {tab.label} ({tab.count})
               </button>
             ))}
-          </div>
+          </Box>
 
           {/* Reviews List */}
-          <div className="space-y-3">
+          <Box className="space-y-3">
             {filteredReviews.length === 0 ? (
               <EmptyState
-                icon="📝"
+                icon="zi-note"
                 title="Chưa có đánh giá"
                 description={
                   activeTab === 'all' 
@@ -185,13 +177,10 @@ const ShopProfilePage: React.FC = () => {
                 <ReviewCard key={review.id} review={review} />
               ))
             )}
-          </div>
-        </div>
-      </div>
-
-      {/* Safe area bottom */}
-      <div className="safe-area-bottom" />
-    </div>
+          </Box>
+        </Box>
+      </Box>
+    </Page>
   );
 };
 

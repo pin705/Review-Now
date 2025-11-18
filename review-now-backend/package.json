@@ -3,10 +3,15 @@
   "scripts": {
     "build": "nitro build",
     "dev": "nitro dev",
-    "preview": "npx srvx --prod .output/"
+    "preview": "npx srvx --prod .output/",
+    "seed": "node seed.js"
   },
   "devDependencies": {
     "nitro": "latest",
     "rolldown": "latest"
+  },
+  "dependencies": {
+    "mongodb": "^6.21.0",
+    "mongoose": "^8.20.0"
   }
 }

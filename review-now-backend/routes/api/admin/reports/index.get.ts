@@ -1,11 +1,11 @@
 import { defineEventHandler } from 'h3';
 import { connectDB } from '~/utils/db';
+import { Report } from '../../../../models/Report';
 
 export default defineEventHandler(async (event) => {
   await connectDB();
 
-  const ReportModel = await import('~/models/Report');
-  const reports = await ReportModel.find()
+  const reports = await Report.find()
     .sort({ createdAt: -1 })
     .lean();
 

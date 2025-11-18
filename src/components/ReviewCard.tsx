@@ -21,8 +21,11 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
     </div>
   );
 
+  // Check if review needs moderation
+  const needsModeration = review.needsModeration && review.isFirstReview;
+
   return (
-    <div className="card fade-in mb-3">
+    <div className={`card fade-in mb-3 ${needsModeration ? 'opacity-60 bg-gray-50' : ''}`}>
       <div className="flex items-start justify-between mb-2">
         <div className="flex-1">
           <div className="font-medium text-gray-900">{review.userName}</div>
@@ -31,6 +34,11 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
             <span className="text-xs text-gray-500">
               {formatDate(review.createdAt)}
             </span>
+            {needsModeration && (
+              <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">
+                Đang kiểm duyệt
+              </span>
+            )}
           </div>
         </div>
         <span className={`badge ${review.type === 'positive' ? 'success' : 'danger'}`}>
@@ -39,24 +47,33 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
         </span>
       </div>
       
-      <p className="text-gray-700 text-sm leading-relaxed mb-3">
-        {review.content}
-      </p>
-      
-      {/* Image Gallery */}
-      {review.images && review.images.length > 0 && (
-        <div className="grid grid-cols-3 gap-2 mb-3">
-          {review.images.map((imageUrl, index) => (
-            <div key={index} className="aspect-square rounded-lg overflow-hidden border border-gray-200">
-              <img 
-                src={imageUrl} 
-                alt={`Review image ${index + 1}`}
-                className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
-                onClick={() => window.open(imageUrl, '_blank')}
-              />
-            </div>
-          ))}
+      {needsModeration ? (
+        <div className="text-gray-500 text-sm italic bg-white p-3 rounded border border-gray-200">
+          <Icon icon="zi-info-circle" size={16} className="inline mr-1" />
+          Nội dung đánh giá đầu tiên sẽ được hiển thị sau khi có ít nhất 2 người dùng khác đánh giá shop này.
         </div>
+      ) : (
+        <>
+          <p className="text-gray-700 text-sm leading-relaxed mb-3">
+            {review.content}
+          </p>
+          
+          {/* Image Gallery */}
+          {review.images && review.images.length > 0 && (
+            <div className="grid grid-cols-3 gap-2 mb-3">
+              {review.images.map((imageUrl, index) => (
+                <div key={index} className="aspect-square rounded-lg overflow-hidden border border-gray-200">
+                  <img 
+                    src={imageUrl} 
+                    alt={`Review image ${index + 1}`}
+                    className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+                    onClick={() => window.open(imageUrl, '_blank')}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
       
       <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">

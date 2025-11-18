@@ -10,6 +10,8 @@ export interface Shop {
   positiveReviews: number;
   negativeReviews: number;
   verified: boolean;
+  createdBy?: string; // Zalo User ID
+  needsModeration?: boolean; // True if first review needs verification
   createdDate?: string;
   lastUpdated?: string;
   images?: string[]; // Array of shop image URLs
@@ -26,6 +28,8 @@ export interface Review {
   type: 'positive' | 'negative';
   createdAt: string;
   helpful: number;
+  isFirstReview?: boolean; // True if this is creator's first review
+  needsModeration?: boolean; // True if content should be hidden
   images?: string[]; // Array of image URLs
 }
 
@@ -35,7 +39,7 @@ export interface Report {
   shopId: string;
   userId: string;
   userName: string;
-  reason: 'scam' | 'fake-product' | 'poor-service' | 'not-delivery' | 'other';
+  reason: 'scam' | 'fake-product' | 'poor-service' | 'not-delivery' | 'duplicate-shop' | 'wrong-info' | 'other';
   content: string;
   evidence?: string[]; // URLs to images
   createdAt: string;

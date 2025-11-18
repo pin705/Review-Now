@@ -42,6 +42,15 @@ const shopSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  createdBy: {
+    type: String, // Zalo User ID
+    required: true,
+    index: true
+  },
+  needsModeration: {
+    type: Boolean,
+    default: true // First review needs moderation until 2+ other users review
+  },
   images: {
     type: [String],
     default: []

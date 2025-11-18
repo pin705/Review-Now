@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Page, Header, Button, Icon, Box } from 'zmp-ui';
+import { Page, Header, Button, Icon, Box, Modal, Input, Select, useSnackbar } from 'zmp-ui';
 import { Shop, Review } from '../types';
 import { shopService } from '../services/shop.service';
 import TrustScoreCard from '../components/TrustScoreCard';
@@ -8,10 +8,16 @@ import ReviewCard from '../components/ReviewCard';
 import EmptyState from '../components/EmptyState';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { formatPhone, formatDate, getPlatformIconName } from '../utils/helpers';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../state';
+
+const { Option } = Select;
 
 const ShopProfilePage: React.FC = () => {
   const { shopId } = useParams<{ shopId: string }>();
   const navigate = useNavigate();
+  const snackbar = useSnackbar();
+  const user = useRecoilValue(userState);
   
   const [shop, setShop] = useState<Shop | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
@@ -20,6 +26,12 @@ const ShopProfilePage: React.FC = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
   const [activeTab, setActiveTab] = useState<'all' | 'positive' | 'negative'>('all');
+  
+  // Report Shop Modal
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportReason, setReportReason] = useState('');
+  const [reportContent, setReportContent] = useState('');
+  const [submittingReport, setSubmittingReport] = useState(false);
 
   useEffect(() => {
     loadShopData();
@@ -67,6 +79,38 @@ const ShopProfilePage: React.FC = () => {
       console.error('Error loading reviews:', e);
     } finally {
       setLoadingMore(false);
+    }
+  };
+
+  const handleReportShop = async () => {
+    if (!shopId || !reportReason || !reportContent.trim()) return;
+    
+    setSubmittingReport(true);
+    try {
+      await shopService.reportShop({
+        shopId,
+        userId: user.id || 'anonymous',
+        userName: user.name || 'Người dùng ẩn danh',
+        reason: reportReason as any,
+        content: reportContent.trim()
+      });
+      
+      snackbar.openSnackbar({
+        text: 'Báo cáo đã được gửi thành công!',
+        type: 'success',
+      });
+      
+      setShowReportModal(false);
+      setReportReason('');
+      setReportContent('');
+    } catch (error) {
+      console.error('Error reporting shop:', error);
+      snackbar.openSnackbar({
+        text: 'Có lỗi xảy ra. Vui lòng thử lại!',
+        type: 'error',
+      });
+    } finally {
+      setSubmittingReport(false);
     }
   };
 
@@ -164,29 +208,6 @@ const ShopProfilePage: React.FC = () => {
         {/* Trust Score */}
         <TrustScoreCard shop={shop} />
 
-        {/* Actions */}
-        <Box className="flex items-center gap-3">
-          <Button
-            onClick={() => navigate(`/review/${shop.id}?type=review`)}
-            variant="primary"
-            size="medium"
-            fullWidth
-            icon={<Icon icon="zi-edit" />}
-          >
-            Đánh giá
-          </Button>
-          <Button
-            onClick={() => navigate(`/review/${shop.id}?type=report`)}
-            variant="secondary"
-            size="medium"
-            fullWidth
-            icon={<Icon icon="zi-warning-circle" />}
-            className="!bg-red-50 !text-red-600 hover:!bg-red-100"
-          >
-            Báo cáo
-          </Button>
-        </Box>
-
         {/* Reviews Section */}
         <Box className="card">
           <h3 className="card-header">Đánh giá & Báo cáo</h3>
@@ -242,6 +263,93 @@ const ShopProfilePage: React.FC = () => {
           </Box>
         </Box>
       </Box>
+
+      {/* Sticky Action Buttons */}
+      <Box className="fixed bottom-20 right-4 flex flex-col gap-3 z-10">
+        <Button
+          onClick={() => navigate(`/review/${shop.id}?type=review`)}
+          variant="primary"
+          size="medium"
+          icon={<Icon icon="zi-edit" />}
+          className="!rounded-full !w-14 !h-14 !p-0 shadow-lg"
+        >
+        </Button>
+        <Button
+          onClick={() => navigate(`/review/${shop.id}?type=report`)}
+          variant="secondary"
+          size="medium"
+          icon={<Icon icon="zi-warning-circle" />}
+          className="!bg-red-500 !text-white hover:!bg-red-600 !rounded-full !w-14 !h-14 !p-0 shadow-lg"
+        >
+        </Button>
+        {/* <Button
+          onClick={() => setShowReportModal(true)}
+          variant="secondary"
+          size="medium"
+          icon={<Icon icon="zi-flag" />}
+          className="!bg-orange-500 !text-white hover:!bg-orange-600 !rounded-full !w-14 !h-14 !p-0 shadow-lg"
+          title="Báo cáo Shop"
+        >
+        </Button> */}
+      </Box>
+
+      {/* Report Shop Modal */}
+      {/* <Modal
+        visible={showReportModal}
+        title="Báo cáo Shop"
+        onClose={() => {
+          setShowReportModal(false);
+          setReportReason('');
+          setReportContent('');
+        }}
+        actions={[
+          {
+            text: 'Hủy',
+            close: true,
+            highLight: false
+          },
+          {
+            text: 'Gửi báo cáo',
+            close: false,
+            highLight: true,
+            disabled: !reportReason || !reportContent.trim() || submittingReport,
+            onClick: handleReportShop
+          }
+        ]}
+      >
+        <Box className="space-y-4 p-4">
+          <Box>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Lý do báo cáo
+            </label>
+            <Select
+              placeholder="Chọn lý do báo cáo"
+              value={reportReason}
+              onChange={(value) => setReportReason(value as string)}
+            >
+              <Option value="duplicate-shop" title="Shop trùng lặp" />
+              <Option value="wrong-info" title="Thông tin sai" />
+              <Option value="scam" title="Lừa đảo" />
+              <Option value="other" title="Khác" />
+            </Select>
+          </Box>
+          
+          <Box>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Mô tả chi tiết
+            </label>
+            <Input.TextArea
+              placeholder="Vui lòng mô tả chi tiết vấn đề..."
+              value={reportContent}
+              onChange={(e) => setReportContent(e.target.value)}
+              rows={4}
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Tối thiểu 20 ký tự
+            </p>
+          </Box>
+        </Box>
+      </Modal> */}
     </Page>
   );
 };

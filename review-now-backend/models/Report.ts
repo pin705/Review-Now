@@ -18,7 +18,7 @@ const reportSchema = new mongoose.Schema({
   },
   reason: {
     type: String,
-    enum: ['scam', 'fake-product', 'poor-service', 'not-delivery', 'other'],
+    enum: ['scam', 'fake-product', 'poor-service', 'not-delivery', 'duplicate-shop', 'wrong-info', 'other'],
     required: true
   },
   content: {

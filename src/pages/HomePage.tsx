@@ -5,6 +5,7 @@ import { Section } from "../components/section";
 import { Divider } from "../components/divider";
 import { shopService } from "../services/shop.service";
 import { Shop } from "../types";
+import { getPlatformIconName } from "utils/helpers";
 
 // Welcome Header Component
 const Welcome: FC = () => {

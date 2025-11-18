@@ -34,11 +34,13 @@ export default defineEventHandler(async (event) => {
     userId: review.userId,
     userName: review.userName,
     rating: review.rating,
-    content: review.content,
+    content: (review as any).needsModeration ? '' : review.content, // Hide content if needs moderation
     type: review.type,
     createdAt: review.createdAt,
     helpful: review.helpful,
-    images: review.images || []
+    isFirstReview: (review as any).isFirstReview || false,
+    needsModeration: (review as any).needsModeration || false,
+    images: (review as any).needsModeration ? [] : (review.images || []) // Hide images if needs moderation
   }));
 
   return {

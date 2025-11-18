@@ -138,6 +138,7 @@ export const shopService = {
     link?: string;
     platform: string;
     verified: boolean;
+    userId: string; // Zalo User ID
     images?: string[];
   }): Promise<Shop> => {
     try {
@@ -148,12 +149,42 @@ export const shopService = {
         },
         body: JSON.stringify(shopData),
       });
+      
       if (!response.ok) {
-        throw new Error('Failed to create shop');
+        const error = await response.json();
+        throw new Error(error.statusMessage || 'Failed to create shop');
       }
       return await response.json();
     } catch (error) {
       console.error('Error creating shop:', error);
+      throw error;
+    }
+  },
+
+  // Report shop
+  reportShop: async (reportData: {
+    shopId: string;
+    userId: string;
+    userName: string;
+    reason: 'scam' | 'fake-product' | 'poor-service' | 'not-delivery' | 'duplicate-shop' | 'wrong-info' | 'other';
+    content: string;
+    evidence?: string[];
+  }): Promise<Report> => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/reports/shop`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(reportData),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to report shop');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error reporting shop:', error);
       throw error;
     }
   },

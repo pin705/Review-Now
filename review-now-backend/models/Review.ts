@@ -36,6 +36,14 @@ const reviewSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  isFirstReview: {
+    type: Boolean,
+    default: false // Mark if this is the creator's first review
+  },
+  needsModeration: {
+    type: Boolean,
+    default: false // True if shop needs moderation and this is first review
+  },
   images: {
     type: [String],
     default: []

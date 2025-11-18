@@ -60,6 +60,7 @@ const AddShopPage: React.FC = () => {
         link: link.trim() || undefined,
         platform: platform || 'other',
         verified: false,
+        userId: user.id || 'anonymous',
         images
       });
       
@@ -82,10 +83,10 @@ const AddShopPage: React.FC = () => {
       
       // Navigate to the new shop page
       navigate(`/shop/${newShop.id}`);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating shop:', error);
       snackbar.openSnackbar({
-        text: 'Có lỗi xảy ra. Vui lòng thử lại!',
+        text: error.message || 'Có lỗi xảy ra. Vui lòng thử lại!',
         type: 'error',
       });
     } finally {
@@ -301,7 +302,6 @@ const AddShopPage: React.FC = () => {
 
         {/* Validation Summary */}
         {!canSubmit && !submitting && (
-          <div className="pb-12">
             <Box className="card bg-yellow-50 border-yellow-200">
             <Text size="xSmall" className="font-medium text-yellow-900 mb-2">
               Vui lòng hoàn thiện các thông tin:
@@ -327,7 +327,6 @@ const AddShopPage: React.FC = () => {
               )}
             </Box>
           </Box>
-          </div>
         )}
       </Box>
     </Page>

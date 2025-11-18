@@ -52,7 +52,8 @@ const ReviewPage: React.FC = () => {
           userName: user.name || 'Người dùng ẩn danh',
           rating,
           content: content.trim(),
-          type: rating >= 3 ? 'positive' : 'negative'
+          type: rating >= 3 ? 'positive' : 'negative',
+          helpful: 0
         });
       } else {
         await shopService.addReport({

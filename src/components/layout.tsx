@@ -5,10 +5,12 @@ import { getSystemInfo } from "zmp-sdk";
 import { Navigation } from "./navigation";
 
 // Pages
+import HomePage from "../pages/HomePage";
 import SearchPage from "../pages/SearchPage";
 import ShopProfilePage from "../pages/ShopProfilePage";
 import ReviewPage from "../pages/ReviewPage";
 import RecentReviewsPage from "../pages/RecentReviewsPage";
+import ProfilePage from "../pages/ProfilePage";
 
 if (import.meta.env.DEV) {
   document.body.style.setProperty("--zaui-safe-area-inset-top", "24px");
@@ -28,8 +30,10 @@ export const Layout: FC = () => {
       <Box className="flex-1 flex flex-col overflow-hidden">
 
         <Routes>
-          <Route path="/" element={<SearchPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/recent" element={<RecentReviewsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/shop/:shopId" element={<ShopProfilePage />} />
           <Route path="/review/:shopId" element={<ReviewPage />} />
         </Routes>
